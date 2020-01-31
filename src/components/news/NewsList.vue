@@ -33,14 +33,16 @@ export default {
   methods: {
     getNewsList () {
       // 获取新闻列表
-      this.$http.get('api/getnewslist').then(result => {
-        if (result.body.status === 0) {
-          // 如果没有获取没有失败，则要把数据存放在data身上
-          this.newslist = result.body.message
-        } else {
-          Toast('获取新闻列表失败！')
-        }
-      })
+      // this.$http.get('api/getnewslist').then(result => {
+      //   if (result.body.status === 0) {
+      //     // 如果没有获取没有失败，则要把数据存放在data身上
+      //     this.newslist = result.body.message
+      //   } else {
+      //     Toast('获取新闻列表失败！')
+      //   }
+      // })
+
+      
     }
   }
 }
