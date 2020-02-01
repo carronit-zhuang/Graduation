@@ -1,6 +1,5 @@
 // 入口文件
 import Vue from 'vue'
-
 // 1.1 导入路由的包
 import VueRouter from 'vue-router'
 // 1.2 安装路由
@@ -146,12 +145,12 @@ Vue.use(VueRouter)
 Vue.use(VuePreview)
 // 定义全局的一个过滤器
 Vue.filter('dateFormat', function (dataStr, pattern = 'YYYY-MM-DD HH:MM:SS') {
-  return moment(dataStr).format(pattern)
+  return moment(dataStr, moment.ISO_8601).format(pattern)
 })
 // 2.2 安装vue-resource
 Vue.use(VueResource)
-// 全局配置请求的根路径
-Vue.http.options.root = 'http://www.liulongbin.top:3005'
+//全局配置请求的根路径
+// Vue.http.options.root = 'http://www.liulongbin.top:3005'
 // 全局设置post时候的表单数据格式
 Vue.http.options.emulateJSON = true
 Vue.use(MintUi)
