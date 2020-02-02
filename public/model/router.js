@@ -4,7 +4,14 @@ const router = express.Router();
 
 // 获取新闻资讯
 router.get('/api/getnewslist',service.getNewlist);
-// 添加图书信息时提交数据
+
+// 获取新闻详情
+router.get('/api/getnew/:id' ,service.getNewsInfo);
+// 获取评论详情
+router.get('/api/getcomments/:id/:pageindex',service.getComments);
+// 发表评论
+router.post('/api/postcomment/:id',service.addComments);
+
 // router.post('/books/book',service.addBook);
 // 编辑图书时根据id来查询相应信息
 // router.get('/books/book/:id',service.getBookById);

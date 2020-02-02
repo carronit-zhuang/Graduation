@@ -33,6 +33,7 @@ import '../public/global.css'
 // Vue.component(Button.name, Button);
 // Vue.use(Lazyload);
 import mui from './lib/mui/js/mui.js'
+// import '../public/model/index'
 Vue.use(Vuex)
 Vue.prototype.mui = mui
 // 每次刚进入网站，肯定会调用main.js，在刚调用的时候，先从本的存储中把购物车的数据读出来，放到Store中

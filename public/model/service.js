@@ -1,4 +1,7 @@
 const Newlist = require('./newlist.js')
+const Newsinfo = require('./newsinfo.js')
+const Comments = require('./comments.js')
+const Cmtnew = require('./cmt-new.js')
 
 exports.getNewlist = (req,res) => {
   Newlist.find({},(err,docs)=>{
@@ -8,52 +11,73 @@ exports.getNewlist = (req,res) => {
     }
     res.json(docs)
   })
-};
+}
 
-// exports.addBook = (req,res) => {
-//     let info = req.body;
-//     let sql = 'insert into book set ?';
-//     db.base(sql,info,(results)=>{
-//         if(results.affectedRows ==1){
-//             res.json({flag:1});
-//         }else{
-//             res.json({flag:2});
-//         }
-//     });
-// };
+exports.getNewsInfo = (req,res) => {
+  let id = req.params.id
+  Newsinfo.find({"id": id},(err,docs)=>{
+    if(err){
+      console.log(err)
+      return
+    }
+    res.json(docs)
+  })
+}
 
-// exports.getBookById = (req,res) => {
-//     let id = req.params.id;
-//     let sql = 'select * from book where id = ?';
-//     let data = [id];
-//     db.base(sql,data,(results)=>{
-//         res.json(results[0]);
-//     });
-// };
+exports.getComments= (req,res) => {
+  let pageindex = req.params.pageindex
+  let id = req.params.id
+  //新闻资讯页面获取评论数据
+  if(id<=12){
+    let temp = "news"+id
+    Comments.find({id:temp},(err,docs)=>{
+      if(err){
+        console.log(err)
+        return
+      }
+      res.json(docs)
+    }).skip((pageindex-1)*5).limit(pageindex*5).sort({"sort":-1})
+  }
+}
 
-// exports.editBook = (req,res) => {
-//     let info = req.body;
-//     let sql = 'update book set name =?,author=?,category=?,description=? where id =?';
-//     let data = [info.name,info.author,info.category,info.description,info.id];
-//     db.base(sql,data,(results)=>{
-//        if(results.affectedRows == 1 ){
-//            res.json({flag:1});
-//        }else{
-//            res.json({flag:2});
-//        }
-
-//     });
-// };
-
-// exports.deleteBook = (req,res) => {
-//     let id = req.params.id;
-//     let sql = 'delete from book where id=?';
-//     let data = [id];
-//     db.base(sql,data,(results)=>{
-//         if(results.affectedRows == 1 ){
-//             res.json({flag:1});
-//         }else{
-//             res.json({flag:2});
-//         }
-//     });
-// };
+exports.addComments= (req,res) => {
+  let id = req.params.id
+  let temp = "news"+id
+  let content = req.body.content
+  let i 
+  // console.log(content)
+    //新闻资讯页面发表评论数据(新增)
+    //先拿到已存在的数据数量
+  if(id<=12){
+    Comments.countDocuments({id:temp},(err,docs)=>{
+      if(err){
+        console.log(err)
+        return
+      }
+       i = docs
+       console.log(i)
+    })
+    //新增数据
+    const comment = new Comments({
+      "id":"news"+id,
+      "sort":i,
+      "message":{"user_name":"匿名用户","content":content,"add_time":new Date().toISOString() }
+    })
+    comment.save()
+    //排序后重新返回最新的评论数据
+    Comments.find({id:temp},(err,docs)=>{
+      if(err){
+        console.log(err)
+        return
+      }
+      res.json(docs)
+    }).skip(0).limit(5).sort({"sort":-1})
+    // Comments.find({id:temp},(err,docs)=>{
+    //   if(err){
+    //     console.log(err)
+    //     return
+    //   }
+    //   res.json(docs)
+    // }).sort({"sort":-1})
+  }
+}
