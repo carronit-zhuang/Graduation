@@ -10,19 +10,19 @@
             <div class="mui-media-body">新闻资讯</div></router-link></li>
     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/photolist">
             <img src="../../images/menu2.png">
-            <div class="mui-media-body">图片分享</div></router-link></li>
+            <div class="mui-media-body">图片浏览</div></router-link></li>
     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/goodslist">
             <img src="../../images/menu3.png">
             <div class="mui-media-body">商品购买</div></router-link></li>
     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-            <img src="../../images/menu4.png">
+            <img src="../../images/menu6.png">
             <div class="mui-media-body">留言反馈</div></a></li>
     <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-            <img src="../../images/menu5.png">
+            <img src="../../images/menu4.png">
             <div class="mui-media-body">视频专区</div></a></li>
-    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-            <img src="../../images/menu6.png">
-            <div class="mui-media-body">联系我们</div></a></li>
+    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/game">
+            <img src="../../images/menu5.png">
+            <div class="mui-media-body">休闲游戏</div></router-link></li>
   </ul>
   </div>
 </template>
@@ -46,7 +46,7 @@ export default {
         if (result.body.status === 0) {
           this.lunbotuList = result.body.message
         } else {
-          Toast('加载轮播图失败了')
+          mui.toast('加载轮播图失败了')
         }
       })
     }
@@ -61,7 +61,12 @@ export default {
 
 .mui-grid-view.mui-grid-9 {
   background-color: #fff;
+  display: flex;
+  flex-wrap: wrap;
   border: none;
+  li{
+    width: 33.33%;
+  }
     img {
       width: 60px;
       height: 60px;
