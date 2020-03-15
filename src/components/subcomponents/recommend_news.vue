@@ -1,16 +1,8 @@
 <template>
-  <div class="recommand">
+  <div class="recommend">
     <ul class="mui-table-view mui-table-view-chevron">
       	<li class="mui-table-view-cell mui-media" style="padding-left: 140px;background-color:rgb(63, 161, 168)">
             <div>更多推荐内容</div>
-				</li>
-				<li class="mui-table-view-cell mui-media">
-					<router-link class="mui-navigate-right" to="/home/newslist">
-						<div class="mui-media-body">
-							<span class="mui-icon mui-icon-extra mui-icon-extra-dictionary"> </span> 新闻资讯
-							<p class='mui-ellipsis'>让你看的，才是头条。</p>
-						</div>
-					</router-link>
 				</li>
 				<li class="mui-table-view-cell mui-media">
 					<router-link class='mui-navigate-right' to="/home/photolist">

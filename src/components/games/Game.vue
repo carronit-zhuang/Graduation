@@ -30,7 +30,7 @@
       </div>
     </div>
       <div class="space"></div>
-      <recommand-box style="width:100%;"></recommand-box>
+      <recommend-box style="width:100%;"></recommend-box>
       <div class="space"></div>
   </div>
 </div>
@@ -38,7 +38,7 @@
 
 
 <script>
-  import recommand from '../subcomponents/recommand_game.vue'
+  import recommend from '../subcomponents/recommend_game.vue'
     const pointSort = property => (firstRocks, secondRocks) => {
     const firstPoint = firstRocks[property];
     const secondPoint = secondRocks[property];
@@ -117,7 +117,7 @@
     },
      components: {
        // 2.用来注册子组件的节点
-       'recommand-box': recommand
+       'recommend-box': recommend
     },
     methods: {
       isMobile() {

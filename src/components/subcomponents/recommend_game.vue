@@ -1,5 +1,5 @@
 <template>
-  <div class="recommand">
+  <div class="recommend">
     <ul class="mui-table-view mui-table-view-chevron">
       	<li class="mui-table-view-cell mui-media" style="padding-left: 140px;background-color:rgb(63, 161, 168)">
             <div>更多推荐内容</div>

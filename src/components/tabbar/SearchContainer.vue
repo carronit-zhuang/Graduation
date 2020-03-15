@@ -74,7 +74,7 @@
   </div>
 </div>   
     <!-- 推荐内容 -->
-    <recommand-box v-show='showTable'></recommand-box>
+    <recommend-box v-show='showTable'></recommend-box>
   </div>
 </template>
 
@@ -84,7 +84,7 @@
 import '../../lib/mui/js/mui.js'
 import '../../lib/mui/js/mui.picker.min.js'
 import {cityData3}from '../../lib/mui/js/city.data-3.js'
-import recommand from '../subcomponents/recommand_all.vue'
+import recommend from '../subcomponents/recommend_all.vue'
 
 export default {
     data() {
@@ -101,7 +101,7 @@ export default {
   },
   components: {
   // 2.用来注册子组件的节点
-  'recommand-box': recommand
+  'recommend-box': recommend
   },
   mounted(){
         //省市区三级联动

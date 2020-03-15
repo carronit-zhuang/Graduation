@@ -13,7 +13,7 @@
     <!-- 放置评论子组件的区域 -->
     <comment-box :id ="this.id"></comment-box>
     <div class="space"></div>
-    <recommand-box></recommand-box>
+    <recommend-box></recommend-box>
     <div class="space"></div>
   </div>
 </template>
@@ -21,7 +21,7 @@
 <script>
 // 1.导入评论的子组件
 import comment from '../subcomponents/comment.vue'
-import recommand from '../subcomponents/recommand_news.vue'
+import recommend from '../subcomponents/recommend_news.vue'
 
 import { Toast } from 'mint-ui'
 export default {
@@ -45,7 +45,7 @@ export default {
   components: {
     // 2.用来注册子组件的节点
     'comment-box': comment,
-    'recommand-box': recommand
+    'recommend-box': recommend
   }
 }
 </script>
