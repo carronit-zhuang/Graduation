@@ -13,6 +13,8 @@ import GoodsList from './components/goods/GoodsList.vue'
 import GoodsInfo from './components/goods/GoodsInfo.vue'
 import GoodsDesc from './components/goods/GoodsDesc.vue'
 import GoodsComment from './components/goods/GoodsComment.vue'
+import Game from './components/games/Game.vue'
+
 // 创建路由对象
 var router = new VueRouter({
   routes: [ // 配置路由的匹配规则
@@ -28,8 +30,10 @@ var router = new VueRouter({
     { path: '/home/goodslist', component: GoodsList },
     { path: '/home/goodsinfo/:id', component: GoodsInfo, name: 'goodsinfo' },
     { path: '/home/goodsdesc/:id', component: GoodsDesc, name: 'goodsdesc' },
-    { path: '/home/goodscomment/:id', component: GoodsComment }
+    { path: '/home/goodscomment/:id', component: GoodsComment },
+    { path: '/home/game', component: Game }
   ],
+  
   linkActiveClass: 'mui-active' // 替换默认的路由高亮的类，原类名叫做 router-link-active
 })
 // 把自己创建好的路由对象暴露出去，使其得以挂载到VM实例上面
