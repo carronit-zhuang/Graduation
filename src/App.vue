@@ -2,7 +2,7 @@
   <div class='app-container'>
 
       <!-- 顶部的Header区域 -->
-    <mt-header fixed title="Vue移动商城">
+    <mt-header fixed title="移动网络及网站原型设计" >
         <span slot="left" @click="goBack" v-show="flag">
            <mt-button icon="back">返回</mt-button>
         </span>
