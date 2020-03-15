@@ -2,7 +2,8 @@
 import Vue from 'vue'
 // 1.1 导入路由的包
 import VueRouter from 'vue-router'
-// 1.2 安装路由
+
+// import address from 'address'
 
 // 注册vuex状态管理器
 import Vuex from 'vuex'
@@ -21,11 +22,20 @@ import App from './App.vue'
 // 按需要导入mint-ui中的组件   但是要注意的是，在按需导入懒加载的时候，会导致懒加载图标丢失，此时只能全部导入
 // import {Header,Swipe, SwipeItem,Button,Lazyload} from 'mint-ui';
 import MintUi from 'mint-ui'
-import 'mint-ui/lib/style.css'
+
 // 导入MUI的样式
 import './lib/mui/css/mui.css'
+import './lib/mui/css/mui.min.css'
+
 import './lib/mui/css/icons-extra.css'
 import '../public/global.css'
+import 'mint-ui/lib/style.css'
+
+import './lib/mui/css/app.css'
+import './lib/mui/css/mui.picker.css'
+import './lib/mui/css/mui.poppicker.css'
+
+
 // 注册组件
 // Vue.component(Header.name,Header);
 // Vue.component(Swipe.name, Swipe);
@@ -141,7 +151,7 @@ var store = new Vuex.Store({
   }
 
 })
-
+// 1.2 安装路由
 Vue.use(VueRouter)
 Vue.use(VuePreview)
 // 定义全局的一个过滤器
@@ -150,8 +160,13 @@ Vue.filter('dateFormat', function (dataStr, pattern = 'YYYY-MM-DD HH:MM:SS') {
 })
 // 2.2 安装vue-resource
 Vue.use(VueResource)
+// const ip = address.ip()
 //全局配置请求的根路径
 // Vue.http.options.root = 'http://www.liulongbin.top:3005'
+Vue.http.options.root = 'http://localhost:3000'
+// Vue.http.options.root = `http://${ip}:3000`
+
+
 // 全局设置post时候的表单数据格式
 Vue.http.options.emulateJSON = true
 Vue.use(MintUi)
