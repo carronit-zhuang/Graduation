@@ -36,7 +36,7 @@ exports.getComments= (req,res) => {
         return
       }
       res.json(docs)
-    }).skip((pageindex-1)*5).limit(pageindex*5).sort({"sort":-1})
+    }).sort({"sort":-1}).skip((pageindex-1)*5).limit(5)
   }
 }
 
@@ -49,35 +49,25 @@ exports.addComments= (req,res) => {
     //新闻资讯页面发表评论数据(新增)
     //先拿到已存在的数据数量
   if(id<=12){
-    Comments.countDocuments({id:temp},(err,docs)=>{
-      if(err){
-        console.log(err)
-        return
-      }
-       i = docs
-       console.log(i)
-    })
+    async function getCount(){
+      await Comments.countDocuments({id:temp},(err,docs)=>{
+        if(err){
+          console.log(err)
+          return
+        }
+         i = docs
+      })
+
     //新增数据
+    // console.log(i)
     const comment = new Comments({
       "id":"news"+id,
       "sort":i,
       "message":{"user_name":"匿名用户","content":content,"add_time":new Date().toISOString() }
     })
     comment.save()
-    //排序后重新返回最新的评论数据
-    Comments.find({id:temp},(err,docs)=>{
-      if(err){
-        console.log(err)
-        return
-      }
-      res.json(docs)
-    }).skip(0).limit(5).sort({"sort":-1})
-    // Comments.find({id:temp},(err,docs)=>{
-    //   if(err){
-    //     console.log(err)
-    //     return
-    //   }
-    //   res.json(docs)
-    // }).sort({"sort":-1})
+    res.json(i)
+    }
+    getCount()
   }
 }
