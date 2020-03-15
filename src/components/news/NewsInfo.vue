@@ -5,19 +5,24 @@
     <!-- 子标题 -->
     <p class='subtitle'>
       <span>发表时间：{{newsinfo.add_time | dateFormat}}</span>
-      <span>点击：{{newsinfo.click}}次</span>
+      <!-- <span>点击：{{newsinfo.click}}次</span> -->
     </p>
     <hr>
     <!-- 内容的区域 -->
     <div class="content" v-html='newsinfo.content'> </div>
     <!-- 放置评论子组件的区域 -->
     <comment-box :id ="this.id"></comment-box>
+    <div class="space"></div>
+    <recommand-box></recommand-box>
+    <div class="space"></div>
   </div>
 </template>
 
 <script>
 // 1.导入评论的子组件
 import comment from '../subcomponents/comment.vue'
+import recommand from '../subcomponents/recommand_news.vue'
+
 import { Toast } from 'mint-ui'
 export default {
   data () {
@@ -39,7 +44,8 @@ export default {
   },
   components: {
     // 2.用来注册子组件的节点
-    'comment-box': comment
+    'comment-box': comment,
+    'recommand-box': recommand
   }
 }
 </script>
@@ -47,6 +53,9 @@ export default {
 <style lang="scss" scoped>
   .newsinfo-container{
     padding: 0 4px;
+    .space{
+      margin-bottom: 20px;
+    }
     .title{
       color: red;
       font-size: 16px;
@@ -55,7 +64,7 @@ export default {
     }
     .subtitle{
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       font-size: 13px;
       color: #226aff;
     }
