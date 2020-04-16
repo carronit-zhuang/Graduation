@@ -5,7 +5,7 @@
 <div id="slider" class="mui-slider">
   <div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
     <div class="mui-scroll">
-      <a :class="['mui-control-item' ,item.id ===0?'mui-active':'']" v-for="item in cates" :key="item.id" @click="getPhotoListByCateId(item.id)">
+      <a :class="['mui-control-item' ,item.id ==0?'mui-active':'']" v-for="item in cates" :key="item.img_url" @click="getPhotoListByCateId(item.id)">
         {{item.title}}
       </a>
     </div>
@@ -14,7 +14,7 @@
 
     <!-- 图片列表区域 -->
     <ul class='photo-list'>
-  <router-link v-for="item in list" :key='item.id' :to="'/home/photoinfo/'+item.id" tag="li">
+  <router-link v-for="item in list" :key='item.img_url' :to="'/home/photoinfo/'+item.id" tag="li">
     <img v-lazy="item.img_url">
     <div class="info">
       <h1 class="info-title">{{item.title}}</h1>
@@ -47,21 +47,22 @@ export default {
   methods: {
     getAllCategory () {
       // 获取所有图片的分类
-      this.$http.get('api/getimgcategory').then(result => {
-        if (result.body.status === 0) {
+       this.$http.get('api/getimgcategory').then(result => {
+        
           // 手动拼接处来一个最完整的分类
-          result.body.message.unshift({ title: '全部', id: 0 })
-          this.cates = result.body.message
-          this.cates.splice(1, 3)
-        }
+          // result.body.message.unshift({ title: '全部', id: 0 })
+          // this.cates = result.body.message
+          this.cates = JSON.parse(result.bodyText)[0].message
+          // this.cates.splice(1, 3)
+        
       })
     },
     getPhotoListByCateId (cateId) {
       // 根据分类id获取图片列表
       this.$http.get('api/getimages/' + cateId).then(result => {
-        if (result.body.status === 0) {
-          this.list = result.body.message
-        }
+          // this.list = result.body.message
+          this.list = JSON.parse(result.bodyText)
+        
       })
     }
   }
@@ -93,16 +94,19 @@ export default {
       }
       .info{
         color: white;
-        text-align: left;
+        
         position: absolute;
         bottom: 0;
         max-height: 84px;
         background-color: rgba(0, 0, 0, 0.4);
+        width: 100%;
         .info-title{
           font-size: 14px;
+          text-align: center;
         }
         .info-body{
           font-size: 13px;
+          text-align: left;
         }
       }
     }

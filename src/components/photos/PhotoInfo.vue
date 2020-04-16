@@ -3,14 +3,16 @@
     <h3>{{photoinfo.title}}</h3>
     <p class='subtitle'>
       <span>发表时间：{{photoinfo.add_time | dateFormat}}</span>
-      <span>点击: {{photoinfo.click}}次</span>
+      <!-- <span>点击: {{photoinfo.click}}次</span> -->
     </p>
   <hr>
 
   <!-- 缩略图区域 -->
 <div class="thumbs">
     <!-- <img class="preview-img" v-for="(item, index) in list" :src="item.src" height="100" @click="$preview.open(index, list)" :key="item.src"> -->
+   
     <vue-preview :slides="list" class="imgPrev"></vue-preview>
+    
 </div>
 
   <!-- 图片内容区域 -->
@@ -18,12 +20,16 @@
 
   <!-- 放置一个现场的评论子组件 -->
   <cmt-box :id='id'></cmt-box>
+    <div class="space"></div>
+    <recommend-box></recommend-box>
+    <div class="space"></div>
   </div>
 </template>
 
 <script>
 // 1.导入评论的子组件
 import comment from '../subcomponents/comment.vue'
+import recommend from '../subcomponents/recommend_photo.vue'
 export default {
   data () {
     return {
@@ -33,36 +39,42 @@ export default {
     }
   },
   created () {
-    this.getPhotoInfo()
     this.getThumbs()
+    this.getPhotoInfo()
   },
   methods: {
     getPhotoInfo () {
       // 获取图片的详情信息
       this.$http.get('api/getimageInfo/' + this.id).then(result => {
-        if (result.body.status === 0) {
-          this.photoinfo = result.body.message[0]
-        }
+          // this.photoinfo = result.body.message[0]
+          this.photoinfo = JSON.parse(result.bodyText)[0].message[0]
       })
     },
     getThumbs () {
       // 获取缩略图的数据
-      this.$http.get('api/getthumimages/' + this.id).then(result => {
-        if (result.body.status === 0) {
+      this.$http.get('api/getthumbnail/' + this.id).then(result => {
           // 循环数组中的每个图片数据，补全图片的宽和高
-          result.body.message.forEach(item => {
+          let tempArr = []
+          tempArr = JSON.parse(result.bodyText)[0].message
+          tempArr.forEach(item => { 
             item.w = 600
             item.h = 400
             item.msrc = item.src
           })
-        }
+          // result.body.message.forEach(item => { 
+          //   item.w = 600
+          //   item.h = 400
+          //   item.msrc = item.src
+          // })
         // 再把完整的数据保存到slide中
-        this.list = result.body.message
+        this.list = tempArr
+        // this.list = result.body.message
       })
     }
   },
   components: { // 2.注册子组件
-    'cmt-box': comment
+    'cmt-box': comment,
+    'recommend-box': recommend
   }
 }
 </script>
@@ -70,24 +82,30 @@ export default {
 <style lang="scss" scoped>
   .photoinfo-container{
     padding: 3px;
+    .space{
+      margin-bottom: 20px;
+    }
     h3 {
-      color: #26A2FF;
+      color: rgb(172, 38, 120);
       font-size: 15px;
       text-align: center;
       margin: 15px 0;
     }
     .subtitle {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       font-size: 13px;
     }
     .content {
       font-size: 13px;
-      line-height: 30px;
+      line-height: 35px;
+      padding: 10px;
+      text-indent: 2em;
     }
-    .thumbs {
+    .thumbs { //要修改关于缩略图的样式，去自定义global.css改
       img {
         margin: 10px;
+        height: 100px;
         box-shadow: 0 0 8px #999;
       }
     }
