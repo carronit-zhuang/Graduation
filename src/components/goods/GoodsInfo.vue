@@ -19,16 +19,16 @@
     <!-- 商品购买区域 -->
 
     <div class="mui-card">
-				<div class="mui-card-header">{{goodsinfo.title}}</div>
+				<div class="mui-card-header goodsinfo-title">{{goodsinfo.title}}</div>
 				<div class="mui-card-content">
 					<div class="mui-card-content-inner">
-					<p class="price">
+					<p>
             市场价：<del>￥{{goodsinfo.market_price}}</del>&nbsp;&nbsp;销售价：<span class="now_price">￥{{goodsinfo.sell_price}}</span>
           </p>
-          <p class="num">购买数量：<numbox @getcount="getSelectedCount" :max="goodsinfo.stock_quantity"></numbox> </p>
+          <p class="num"> <span> 购买数量：</span><numbox @getcount="getSelectedCount" :max="goodsinfo.stock_quantity"></numbox> </p>
           <p>
-            <mt-button type="primary" size="small">立即购买</mt-button>
-            <mt-button type="danger" size="small" @click="addToShopCar">加入购物车</mt-button>
+            <button type="button" class="mui-btn mui-btn mui-btn-warning" @tap="order">立即购买</button>
+            <button type="button" class="mui-btn mui-btn-royal" @click="addToShopCar">加入购物车</button>
             <!-- numbox组件里面的数值要传给外面的goodsinfo组件，涉及到子组件向父组件传值（事件调用机制）
             具体方法：父组件自定义的方法绑在子组件身上，然后z在子组件内部通过emit触发-->
           </p>
@@ -37,13 +37,13 @@
         </div>
 
     <!-- 商品参数区域 -->
-    <div class="mui-card">
+    <div class="mui-card ">
 				<div class="mui-card-header">商品参数</div>
 				<div class="mui-card-content">
 					<div class="mui-card-content-inner">
-					  <p>商品货号：{{goodsinfo.goods_no}}</p>
-					  <p>库存情况：{{goodsinfo.stock_quantity}}</p>
-					  <p>上架时间：{{goodsinfo.add_time | dateFormat}}</p>
+					  <p> <span>商品货号：</span>  <span>{{goodsinfo.goods_no}}</span> </p>
+					  <p> <span>库存情况：</span> <span>{{goodsinfo.stock_quantity}}</span> </p>
+					  <p>  <span>上架时间：</span> <span>{{goodsinfo.add_time | dateFormat}}</span> </p>
 					</div>
 				</div>
 				<div class="mui-card-footer">
@@ -52,6 +52,9 @@
           <mt-button type='danger' size='large' plain @click="goComment(id)">商品评论</mt-button>
 
         </div>
+    <div class="space"></div>
+    <recommend-box></recommend-box>
+    <div class="space"></div>
 			</div>
 
   </div>
@@ -61,6 +64,8 @@
 <script>
 import swiper from '../subcomponents/swiper.vue'
 import numbox from '../subcomponents/goodsinfo_numbox.vue'
+import recommend from '../subcomponents/recommend_goods.vue'
+
 export default {
   data () {
     return {
@@ -68,7 +73,8 @@ export default {
       lunbotu: [], // 轮播图的数据
       goodsinfo: {}, // 获取到的商品的信息
       ballFlag: false, // 控制小球隐藏和显示的标识符
-      selectedCount: 1 // 保存用户选中的商品数量，默认用户进来就买一个
+      selectedCount: 1, // 保存用户选中的商品数量，默认用户进来就买一个
+      pageIndex: 1 // 默认展示第一页的数据
     }
   },
   created () {
@@ -77,22 +83,21 @@ export default {
   },
   methods: {
     getLunbotu () {
-      this.$http.get('api/getthumimages/' + this.id).then(result => {
-        if (result.body.status === 0) {
-          // 先循环轮播图数组中的每一项，为item添加img属性，因为swiper组件中只认识item.img，不认识item.src
-          result.body.message.forEach(item => {
+      this.$http.get('api/getswiper/' + this.id).then(result => {
+          let tempArr = []
+          tempArr = JSON.parse(result.bodyText)[0].message
+      // 先循环轮播图数组中的每一项，为item添加img属性，因为swiper组件中只认识item.img，不认识item.src
+          tempArr.forEach(item => {
             item.img = item.src
           })
-          this.lunbotu = result.body.message
-        }
+          this.lunbotu = tempArr
       })
     },
     getGoodsInfo () {
       // 获取商品的详情信息
       this.$http.get('api/goods/getinfo/' + this.id).then(result => {
-        if (result.body.status === 0) {
-          this.goodsinfo = result.body.message[0]
-        }
+          // this.goodsinfo = result.body.message[0]
+          this.goodsinfo = JSON.parse(result.bodyText)[0]
       })
     },
     goDesc (id) {
@@ -101,7 +106,7 @@ export default {
     },
     goComment (id) {
       // 利用编程式导航，跳转到评论页面
-      this.$router.push({ path: '/home/goodscomment/' + id })
+      this.$router.push({ path: '/home/goodscomment/' + id})
     },
     addToShopCar () {
       this.ballFlag = !this.ballFlag
@@ -114,7 +119,7 @@ export default {
         selected: true
       }
       // 再调用store中的mutations来将商品加入购物车
-      this.$store.commit('addToCar', goodsinfo)
+      this.$store.commit('addToCart', goodsinfo)
     },
     beforeEnter (el) {
       el.style.transform = 'translate(0,0)'
@@ -144,10 +149,22 @@ export default {
     getSelectedCount (count) {
       // 当子组件把选中的数量传递给父组件的时候，把值保存到Data身上
       this.selectedCount = count
-      console.log('父组件拿到的数量值为：' + this.selectedCount)
+      // console.log('父组件拿到的数量值为：' + this.selectedCount)
+    },
+    order(){
+      var goodsinfo = {
+        id: this.id,
+        count: 1,
+        price: this.goodsinfo.sell_price,
+      }
+      this.$store.commit('assignStateOrder', goodsinfo)
+      this.$router.push('/order')
+
     }
+
   },
   components: {
+    'recommend-box': recommend,
     swiper,
     numbox
   }
@@ -159,6 +176,16 @@ export default {
     background-color: #eee;
     overflow: hidden;
     position: relative;
+    .space{
+      margin-bottom: 20px;
+    }
+    p {
+      display: flex;
+      justify-content: space-between !important ;
+    }
+    .goodsinfo-title {
+      text-align: center;
+    }
     .num {
       display: flex;
       justify-content: flex-start;
@@ -183,7 +210,7 @@ export default {
       position: absolute;
       z-index: 99;
       top: 367px;
-      left: 146px;
+      left: 283px;
     }
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="cmtbox">
     <cmtbox :id="$route.params.id"></cmtbox>
   </div>
 </template>
@@ -14,5 +14,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.cmtbox {
+  padding: 7px;
+  h3 {
+    text-align: center;
+    margin: 20px
+  }
+}
 
 </style>
