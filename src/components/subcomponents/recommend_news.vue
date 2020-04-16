@@ -25,6 +25,13 @@
 						</div>
 					</router-link>
 				</li>
+        <li class="mui-table-view-cell mui-media">
+					<router-link class="mui-navigate-right" to="/search">
+						<div class="mui-media-body"><span class="mui-icon-extra mui-icon-extra-holiday"></span> 天气预报
+							<p class='mui-ellipsis'>安全生产有保障，息息相关是气象。</p>
+						</div>
+					</router-link>
+				</li>
 			</ul>
   </div>
 </template>
