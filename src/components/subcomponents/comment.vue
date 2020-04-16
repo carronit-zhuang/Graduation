@@ -44,13 +44,22 @@ export default {
     return {
       pageIndex: 1, // 默认展示第一页的数据
       comments: [], // 获取到的评论数据
-      msg: '' // 评论输入的内容
+      msg: '', // 评论输入的内容
+      username: ''
     }
   },
   created () {
+    this.getPerson('username')
     this.getComments()
   },
   methods: {
+    getPerson(data){
+      const person = JSON.parse(localStorage.getItem('Login_data'))
+      return this[data] = this.getPersonProp(person, data)
+    },
+    getPersonProp(obj,prop){
+      return obj[prop]
+    },
     getComments () { // 获取评论的数据
       this.$http.get('api/getcomments/' + this.id + '/' + this.pageIndex).then(result => {
           // this.comments = result.body.message;
@@ -58,8 +67,10 @@ export default {
           message = (JSON.parse(result.bodyText))
           // this.comments = this.comments.concat(result.body.message)
           if(message.length == 0){
-            return mui.toast('已加载到最后一页！')
+            // return mui.toast('已加载到最后一页！')
+            return mui.alert('欢迎使用庄佳杰网站', '评论已加载到最后一页')
           }
+          mui.toast('加载中，请稍等。')
           this.comments = this.comments.concat(message)
           // console.log(this.comments)
       })
@@ -79,7 +90,7 @@ export default {
       // 2.提交给服务器的数据对象 {content: this.msg}
       // 3.定义提交的时候，表单中数据的格式 {emulateJSON: true}   这个应该全局配置，比较方便
       this.$http
-        .post('api/postcomment/' + this.$route.params.id, { content: this.msg.trim()}).then(result => {
+        .post('api/postcomment/' + this.$route.params.id, { content: this.msg.trim(),user_name:this.username}).then(result => {
           // 1.拼接出一个评论对象
           // var cmt = { user_name: '匿名用户', add_time: Date.now(), content: this.msg.trim() }
           // // 2.将拼接出的评论放到数组的第一项
