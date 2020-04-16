@@ -17,5 +17,7 @@
 .thumbs img {
   margin: 10px;
   height:100px;
+  width: 100px;
+  margin-right: 200px;
   box-shadow: 0 0 8px #999;
 }
