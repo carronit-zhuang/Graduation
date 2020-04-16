@@ -84,7 +84,7 @@
 import '../../lib/mui/js/mui.js'
 import '../../lib/mui/js/mui.picker.min.js'
 import {cityData3}from '../../lib/mui/js/city.data-3.js'
-import recommend from '../subcomponents/recommend_all.vue'
+import recommend from '../subcomponents/recommend_search.vue'
 
 export default {
     data() {
