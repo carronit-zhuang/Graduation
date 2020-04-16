@@ -25,7 +25,11 @@ export default {
     countChanged () {
       // 每当子组件中文本框的数据被修改的时候，就要立即把最新的数据通过事件调用，传递给父组件
       // console.log(this.$refs.numbox.value)
-      this.$emit('getcount', parseInt(this.$refs.numbox.value))
+      if(this.$refs.numbox.value > parseInt(this.max)){
+       this.$emit('getcount', parseInt(this.max))
+      }else{
+        this.$emit('getcount', parseInt(this.$refs.numbox.value))
+      }
     }
   },
   props: ['max'],
