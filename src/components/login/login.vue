@@ -38,6 +38,9 @@ export default {
             username: '',
             password: '',
             flag: false,
+            email: '',
+            phone: '',
+            cart: ''
         }
     },
     computed: {
@@ -70,24 +73,14 @@ export default {
          this.findAccount().then(data=>{
            if (data.userExist) { // 手动触发校验所有数据  用户是否存在
               if(data.correctQuery){  //账户和密码是否对应
-                console.log(111)
                 this.$axios.get('api/account/straight?username='+this.username).then(result=>{
-                  const phone = result.data[0].phone
-                  const email = result.data[0].email
-                  const cart = result.data[0].cart
-                  localStorage.setItem("Login_data", JSON.stringify({
-                    username: this.username,
-                    password: this.password,
-                    email: email,
-                    phone: phone,
-                    cart: JSON.parse(cart)
-                }))
-                this.$store.commit('updateCart', Array.isArray( JSON.parse(cart) )?JSON.parse(cart) :JSON.parse(JSON.parse(cart) ))
-                mui.toast(this.username +'，欢迎您！');
-                this.$router.push({ path: '/home'})
+                  this.phone = result.data[0].phone
+                  this.email = result.data[0].email
+                  this.cart = result.data[0].cart
+                  this.setLocalStorage(this.cart)
+                  mui.toast(this.username +'，欢迎您！');
+                  this.$router.push({ path: '/home'})
                 })
-                
-             
               }else {
                 mui.alert('密码输入错误！');
               }
@@ -105,7 +98,27 @@ export default {
         },
         flagFunc(){
         return this.flag = !this.flag
-      }
+        },
+        setLocalStorage(cart){
+          if(!cart){
+              localStorage.setItem("Login_data", JSON.stringify({
+              username: this.username,
+              password: this.password,
+              email: this.email,
+              phone: this.phone
+            }))
+          }else{
+              localStorage.setItem("Login_data", JSON.stringify({
+              username: this.username,
+              password: this.password,
+              email: this.email,
+              phone: this.phone,
+              cart: JSON.parse(cart)
+            }))
+            this.$store.commit('updateCart', Array.isArray( JSON.parse(cart) )?JSON.parse(cart) :JSON.parse(JSON.parse(cart) ))
+          }
+          
+        },
     },
     mounted() {
 
