@@ -295,14 +295,26 @@ exports.getShopCarList = (req,res) => {  //获取购物车列表信息
 exports.accountRegister = (req,res) => {
      //新增数据
   const body = req.body
-  const account = new Account({
-   "username": body.username,
-   "password": body.password,
-   "email": body.email,
-   "phone": body.phone
+  let userExist
+  Account.find({'username':body.username},(err,docs)=>{
+    if(err){
+      console.log(err)
+      return
+    }
+    userExist = docs.length
+    if(!userExist){
+      const account = new Account({
+        "username": body.username,
+        "password": body.password,
+        "email": body.email,
+        "phone": body.phone
+       })
+       account.save()
+       res.json(1)
+    }else{
+      res.json(0)
+    }
   })
-  account.save()
-  res.json(1)
 }
 
 exports.getAccount = (req,res) => {  //获取用户的信息，包括判断
@@ -445,7 +457,7 @@ exports.createOrderList = (req,res) => {
     "postCode": body.postCode,
     "specificAddress": body.specificAddress,
     "orderNum": body.orderNum,
-    "paid": body.paid,
+    "ordered": body.ordered,
     "order": body.order
   })
   account.save()
@@ -454,7 +466,7 @@ exports.createOrderList = (req,res) => {
 
 exports.getOrderList = (req,res) => {  //直接简单获取用户的信息，不用判断
   const query = req.query
-  if(typeof query.paid == 'undefined'){
+  if(typeof query.ordered == 'undefined'){
     OrderList.find({'username':query.username},(err,docs)=>{
       if(err){
         console.log(err)
@@ -463,7 +475,7 @@ exports.getOrderList = (req,res) => {  //直接简单获取用户的信息，不
       res.json(docs)
     })
   }else{
-    OrderList.find({'username':query.username, 'paid': query.paid},(err,docs)=>{
+    OrderList.find({'username':query.username, 'ordered': query.ordered},(err,docs)=>{
       if(err){
         console.log(err)
         return
@@ -489,7 +501,7 @@ exports.getOrderListDetail = (req,res) => {  //直接简单获取用户的信息
 exports.updateOrderListPayment = (req,res) => {
   const {body} = req
   const {orderNum} = req.params
-  OrderList.updateOne({'orderNum':orderNum},{'paid': body.paid},(err,docs)=>{
+  OrderList.updateOne({'orderNum':orderNum},{'ordered': body.ordered},(err,docs)=>{
     if(err){
       console.log(err)
       return
@@ -520,3 +532,26 @@ exports.createAdvice = (req,res) => {
   advice.save()
   res.json(1)
   }
+
+//修改商品的数量信息
+exports.modifyQuantity = (req,res) => {
+  const {id} = req.params
+  const {quantity} = req.body
+  let oldQuantity
+  GoodsList.find({'id':id},(err,docs)=>{
+    if(err){
+      return console.log(err)
+    }else{
+      oldQuantity = docs[0]._doc.stock_quantity
+      oldQuantity -= quantity
+      GoodsList.updateOne({'id':id},{"stock_quantity": oldQuantity},(err,docs)=>{
+        if(err){
+          return console.log(err)
+        }else{
+          res.json(1)
+        }
+      })
+    }
+  })
+ }
+

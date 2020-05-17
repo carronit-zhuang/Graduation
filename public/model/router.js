@@ -33,6 +33,8 @@ router.get('/api/home/goodscomment/:id/:pageindex' ,service.getComments);
 router.get('/api/getgoodscategory' ,service.getGoodsCategory);
 //获取相应分类商品的信息
 router.get('/api/getgoodswithcate/:cate/:pageindex' ,service.getGoodsListWithCate);
+//修改相应商品的数量信息
+router.put('/api/modifyQuantity/:id' ,service.modifyQuantity);
 //获取购物车列表的信息
 router.get('/api/goods/getshopcarlist/:id' ,service.getShopCarList);
 //提交用户账号注册的信息
@@ -58,7 +60,7 @@ router.put('/api/orderlist/detail/:orderNum' ,service.updateOrderListPayment);
 //获取商品列表的分类信息
 router.get('/api/getordercategory' ,service.getOrderCategory);
 //获取相应分类商品的信息
-router.get('/api/getgoodswithcate/:cate/:pageindex' ,service.getGoodsListWithCate);
+// router.get('/api/getgoodswithcate/:cate/:pageindex' ,service.getGoodsListWithCate);
 //提交相应反馈信息
 router.post('/api/advice' ,service.createAdvice);
 
