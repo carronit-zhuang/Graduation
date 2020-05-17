@@ -2,9 +2,15 @@
   <div class='app-container'>
 
       <!-- 顶部的Header区域 -->
-    <mt-header fixed title="移动网络及网站原型设计" >
+    <mt-header fixed title="移动网络及网站原型设计" @click="goTop">
         <span slot="left" @click="goBack" v-show="flag">
            <mt-button icon="back">返回</mt-button>
+        </span>
+        <span slot="right" @click="goTop" v-show="scrollFlag">
+          <div class="flexBox">
+            <span class="mui-icon mui-icon-arrowthinup"></span>
+            <mt-button >顶部</mt-button>
+          </div>
         </span>
     </mt-header>
 
@@ -41,16 +47,26 @@
 export default {
   data () {
     return {
-      flag: false
+      flag: false,
+      scrollFlag: false
     }
   },
   created () {
     this.flag = this.$route.path != '/home'
+    window.addEventListener('scroll', () => {
+      this.scrollFlag = window.scrollY > 30 ? true: false 
+    }, true);
+
+  },
+  computed: {
   },
   methods: {
     goBack () {
       // 点击后退
       this.$router.go(-1)
+    },
+    goTop(){
+      window.scrollTo(0, 0)
     }
   },
   watch: {
@@ -117,5 +133,10 @@ export default {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.flexBox {
+  flex-direction: row-reverse;
+  align-items: center;
+  display: flex;
 }
 </style>
