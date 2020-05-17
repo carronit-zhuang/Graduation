@@ -23,14 +23,6 @@
 		                </li>
                   </div>
 
-                  <!-- <div class="space">
-                    <li class="mui-table-view-cell">
-                        <a class="mui-navigate-right">
-                            我的地址
-                        </a>
-                    </li>
-                  </div> -->
-
                   <div class="space loginOut">
                     <li class="mui-table-view-cell">
                         <a class="mui-navigate-right" @tap='loginOut'>
@@ -59,16 +51,15 @@ export default {
       const person = JSON.parse(localStorage.getItem('Login_data'))
       return this[data] = this.getPersonProp(person, data)
     },
-    getPersonProp(obj,prop){
-      // console.log(obj,prop)
+    getPersonProp(obj,prop){ 
       return obj[prop]
     },
     loginOut() {
       let tempObj = JSON.parse(localStorage.getItem('Login_data'))
       const { cart,email,username,phone } = tempObj
-       this.$http.put('api/account/modify',
-        {username: username,email: email,phone:phone, 'cart': JSON.stringify(cart) }).then(data => {
-          if(data.body.userExist){
+       this.$axios.put('api/account/modify',
+        {username: username,email: email,phone:phone, 'cart': JSON.stringify(cart) }).then(result => {
+          if(result.data.userExist){
             window.localStorage.removeItem('Login_data')
             this.$store.commit('clearAll')
             mui.toast('账户成功退出！');

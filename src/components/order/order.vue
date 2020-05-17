@@ -45,8 +45,8 @@ export default {
         return
       }
       this.$store.state.order.forEach(item => {
-        this.$http.get('api/goods/getshopcarlist/' + item.id).then(result => {
-          this.goodslist = this.goodslist.concat(JSON.parse(result.bodyText))
+        this.$axios.get('api/goods/getshopcarlist/' + item.id).then(result => {
+          this.goodslist = this.goodslist.concat(result.data)
           return this.assignCount()
         })
       })

@@ -4,7 +4,7 @@
         <form>
           <div class="box">
             <div class="content">
-              <label for="username">昵称 :</label><input id="username" type="text" class="mui-input-clear mui-input" v-model="username" placeholder="请输入您修改后的用户名昵称">
+              <label for="username">昵称 :</label><input id="username" type="text" class="mui-input-clear mui-input" v-model="username" placeholder="请输入您修改后的用户名昵称" disabled>
             </div>
             <li>{{userErr}}</li>
           </div>
@@ -40,16 +40,16 @@ export default {
   methods: {
      handleSubmit() {  
             if (this.$vuerify.check()) { // 手动触发校验所有数据
-               this.$http.put('api/account/modify',
+               this.$axios.put('api/account/modify',
                 { username: this.username, email: this.email, phone: this.phone}
-                ).then(data => {
-                  if(data.body.userExist){
+                ).then(result => {
+                  if(result.data.userExist){
                     mui.toast('信息修改成功');
-                    this.$http.get('api/account/straight?username='+this.username).then(result=>{
-                      const username = result.body[0].username
-                      const password = result.body[0].password
-                      const phone = result.body[0].phone
-                      const email = result.body[0].email
+                    this.$axios.get('api/account/straight?username='+this.username).then(result=>{
+                      const username = result.data[0].username
+                      const password = result.data[0].password
+                      const phone = result.data[0].phone
+                      const email = result.data[0].email
                       localStorage.setItem("Login_data", JSON.stringify({
                         username: username,
                         password: password,

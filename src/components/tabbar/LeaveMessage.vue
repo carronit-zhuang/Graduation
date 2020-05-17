@@ -32,7 +32,7 @@ export default {
   methods: {
     postMsg(){
       if(this.content){
-          this.$http.post('api/advice',{content:this.content,account:this.account}).then(result=>{
+          this.$axios.post('api/advice',{content:this.content,account:this.account}).then(result=>{
           mui.toast('提交成功，感谢 '+this.username+' 的建议！')
           this.account =''
           this.content =''

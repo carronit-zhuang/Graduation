@@ -4,7 +4,7 @@
         <form>
           <div class="box">
             <div class="content">
-              <label for="username">昵称 :</label><input id="username" type="text" class="mui-input-clear mui-input" v-model="username" placeholder="请输入您的用户名昵称">
+              <label for="username">昵称 :</label><input id="username" type="text" class="mui-input-clear mui-input" v-model="username" placeholder="请输入您的用户名昵称" disabled>
             </div>
             <li>{{userErr}}</li>
           </div>
@@ -45,6 +45,9 @@ export default {
             rePass: '',
             flag: false,
         }
+    },
+    created(){
+      this.getResetName()
     },
     computed: {
         errors() {
@@ -90,10 +93,10 @@ export default {
     methods: {
         handleSubmit() {
             if (this.$vuerify.check()) { // 手动触发校验所有数据
-               this.$http.put('api/account/reset',
+               this.$axios.put('api/account/reset',
                 { username: this.username, password: this.password}
-                ).then(data => {
-                  if(data.body.userExist){
+                ).then(result => {
+                  if(result.data.userExist){
                    this.$router.push({ path: '/login'})
                    mui.toast('密码已重设，请登录！');
                   }else {
@@ -106,6 +109,9 @@ export default {
         },
         flagFunc(){
           return this.flag = !this.flag
+        },
+        getResetName(){
+          this.username = this.$store.state.resetUserName
         }
     },
     mounted() {

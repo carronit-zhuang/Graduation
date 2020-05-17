@@ -151,8 +151,6 @@ export default {
           self.showTable = true
            mui.toast('查询成功')
         }else{
-          // console.log(self.weatherList)
-          // console.log(self.weatherList.length)
           self.showTable = false
           mui.toast('查询失败')
           }
@@ -171,10 +169,10 @@ export default {
     getWeather(){
               //  console.log(this.district)
        return new Promise((resolve, reject)=>{
-         this.$http.get(`http://wthrcdn.etouch.cn/weather_mini?city=${this.district}`).then(result =>{
-         this.weatherList = (JSON.parse(result.bodyText)).data.forecast
-         this.yesWeather = (JSON.parse(result.bodyText)).data.yesterday
-         this.tip = (JSON.parse(result.bodyText)).data.ganmao
+         this.$axios.get(`http://wthrcdn.etouch.cn/weather_mini?city=${this.district}`).then(result =>{
+         this.weatherList = (result.data).data.forecast
+         this.yesWeather = (result.data).data.yesterday
+         this.tip = (result.data).data.ganmao
          resolve(111)
           }).catch((err)=>{
             self.showTable = false

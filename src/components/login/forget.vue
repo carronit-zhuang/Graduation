@@ -63,6 +63,7 @@ export default {
               this.findAccount().then(data => {
                if (data.userExist) { //用户是否存在
                  if(data.correctQuery){  //账户和密保问题是否对应
+                 this.assignResetName(this.username)
                   mui.toast('验证通过，请重设密码');
                   this.$router.push({ path: '/reset'})
                   }else {
@@ -82,11 +83,14 @@ export default {
            }else if (this.way == 1 ){
              type = 'email'
            }
-            this.$http.get('api/account/verify?username='+this.username+'&'+ type + '='+ this.answer).then(result=>{
-              resolve(result.body)
+            this.$axios.get('api/account/verify?username='+this.username+'&'+ type + '='+ this.answer).then(result=>{
+              resolve(result.data)
            })
          })
         },
+        assignResetName(name){
+        this.$store.commit('assignResetUserName', name)
+      }
     },
     mounted() {
      	(function($, doc) {

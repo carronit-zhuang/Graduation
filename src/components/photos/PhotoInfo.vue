@@ -3,16 +3,12 @@
     <h3>{{photoinfo.title}}</h3>
     <p class='subtitle'>
       <span>发表时间：{{photoinfo.add_time | dateFormat}}</span>
-      <!-- <span>点击: {{photoinfo.click}}次</span> -->
     </p>
   <hr>
 
   <!-- 缩略图区域 -->
 <div class="thumbs">
-    <!-- <img class="preview-img" v-for="(item, index) in list" :src="item.src" height="100" @click="$preview.open(index, list)" :key="item.src"> -->
-   
     <vue-preview :slides="list" class="imgPrev"></vue-preview>
-    
 </div>
 
   <!-- 图片内容区域 -->
@@ -45,30 +41,23 @@ export default {
   methods: {
     getPhotoInfo () {
       // 获取图片的详情信息
-      this.$http.get('api/getimageInfo/' + this.id).then(result => {
-          // this.photoinfo = result.body.message[0]
-          this.photoinfo = JSON.parse(result.bodyText)[0].message[0]
+      this.$axios.get('api/getimageInfo/' + this.id).then(result => {
+          this.photoinfo = result.data[0].message[0]
       })
     },
     getThumbs () {
       // 获取缩略图的数据
-      this.$http.get('api/getthumbnail/' + this.id).then(result => {
+      this.$axios.get('api/getthumbnail/' + this.id).then(result => {
           // 循环数组中的每个图片数据，补全图片的宽和高
           let tempArr = []
-          tempArr = JSON.parse(result.bodyText)[0].message
+          tempArr = result.data[0].message
           tempArr.forEach(item => { 
             item.w = 600
             item.h = 400
             item.msrc = item.src
           })
-          // result.body.message.forEach(item => { 
-          //   item.w = 600
-          //   item.h = 400
-          //   item.msrc = item.src
-          // })
         // 再把完整的数据保存到slide中
         this.list = tempArr
-        // this.list = result.body.message
       })
     }
   },

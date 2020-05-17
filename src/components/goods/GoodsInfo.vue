@@ -7,17 +7,15 @@
      <div class="ball" v-show="ballFlag" ref="ball"></div>
      </transition>
     <!-- 商品轮播图区域 -->
-
     <div class="mui-card">
 				<div class="mui-card-content">
 					<div class="mui-card-content-inner">
-						<swiper :lunbotuList="lunbotu" :isfull="false"></swiper>
+						<swiper :swiperList="swiper" :isfull="false"></swiper>
 					</div>
 				</div>
      </div>
 
     <!-- 商品购买区域 -->
-
     <div class="mui-card">
 				<div class="mui-card-header goodsinfo-title">{{goodsinfo.title}}</div>
 				<div class="mui-card-content">
@@ -27,10 +25,10 @@
           </p>
           <p class="num"> <span> 购买数量：</span><numbox @getcount="getSelectedCount" :max="goodsinfo.stock_quantity"></numbox> </p>
           <p>
-            <button type="button" class="mui-btn mui-btn mui-btn-warning" @tap="order">立即购买</button>
+            <button type="button" class="mui-btn mui-btn mui-btn-warning" @tap="order">立即下单</button>
             <button type="button" class="mui-btn mui-btn-royal" @click="addToShopCar">加入购物车</button>
             <!-- numbox组件里面的数值要传给外面的goodsinfo组件，涉及到子组件向父组件传值（事件调用机制）
-            具体方法：父组件自定义的方法绑在子组件身上，然后z在子组件内部通过emit触发-->
+            具体方法：父组件自定义的方法绑在子组件身上，然后在子组件内部通过emit触发-->
           </p>
 					</div>
 				</div>
@@ -54,7 +52,6 @@
         </div>
     <div class="space"></div>
     <recommend-box></recommend-box>
-    <div class="space"></div>
 			</div>
 
   </div>
@@ -70,7 +67,7 @@ export default {
   data () {
     return {
       id: this.$route.params.id, // 将路由参数对象中的id挂载到data上，方便获取
-      lunbotu: [], // 轮播图的数据
+      swiper: [], // 轮播图的数据
       goodsinfo: {}, // 获取到的商品的信息
       ballFlag: false, // 控制小球隐藏和显示的标识符
       selectedCount: 1, // 保存用户选中的商品数量，默认用户进来就买一个
@@ -78,26 +75,25 @@ export default {
     }
   },
   created () {
-    this.getLunbotu()
+    this.getSwiper()
     this.getGoodsInfo()
   },
   methods: {
-    getLunbotu () {
-      this.$http.get('api/getswiper/' + this.id).then(result => {
+    getSwiper () {
+      this.$axios.get('api/getswiper/' + this.id).then(result => {
           let tempArr = []
-          tempArr = JSON.parse(result.bodyText)[0].message
+          tempArr = result.data[0].message
       // 先循环轮播图数组中的每一项，为item添加img属性，因为swiper组件中只认识item.img，不认识item.src
           tempArr.forEach(item => {
             item.img = item.src
           })
-          this.lunbotu = tempArr
+          this.swiper = tempArr
       })
     },
     getGoodsInfo () {
       // 获取商品的详情信息
-      this.$http.get('api/goods/getinfo/' + this.id).then(result => {
-          // this.goodsinfo = result.body.message[0]
-          this.goodsinfo = JSON.parse(result.bodyText)[0]
+      this.$axios.get('api/goods/getinfo/' + this.id).then(result => {
+          this.goodsinfo = result.data[0]
       })
     },
     goDesc (id) {
@@ -110,8 +106,6 @@ export default {
     },
     addToShopCar () {
       this.ballFlag = !this.ballFlag
-      // {id:商品的id , count:要购买的数量,price: 商品的单价, selected: false}
-      // 手动拼接出一个要保存到store中car数组里的商品信息对象
       var goodsinfo = {
         id: this.id,
         count: this.selectedCount,
@@ -147,19 +141,17 @@ export default {
       this.ballFlag = !this.ballFlag
     },
     getSelectedCount (count) {
-      // 当子组件把选中的数量传递给父组件的时候，把值保存到Data身上
+      // 当子组件把选中的数量传递给父组件的时候，把值保存到父组件的Data身上
       this.selectedCount = count
-      // console.log('父组件拿到的数量值为：' + this.selectedCount)
     },
     order(){
       var goodsinfo = {
         id: this.id,
-        count: 1,
+        count: this.selectedCount,
         price: this.goodsinfo.sell_price,
       }
       this.$store.commit('assignStateOrder', goodsinfo)
       this.$router.push('/order')
-
     }
 
   },

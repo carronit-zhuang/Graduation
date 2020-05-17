@@ -109,11 +109,6 @@ export default {
             },
             message: '两次密码输入不一致'
         },
-        // email: [ // 支持传入数组
-        //     'required',
-        //     'email',
-        //     { test: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/, message: '请您输入正确的邮箱' }
-        // ],
         email:{ 
           test: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/,
           message: '请您输入正确的邮箱地址' 
@@ -124,12 +119,17 @@ export default {
     methods: {
         handleSubmit() {  
             if (this.$vuerify.check()) { // 手动触发校验所有数据
-               this.$http.post('api/account/register',
+               this.$axios.post('api/account/register',
                 { username: this.username, password: this.password, email: this.email, phone: this.phone}
                 ).then(result => {
-                 this.$router.push({ path: '/login'})
+                  console.log(result)
+                  if(result.data == 1){
+                    this.$router.push({ path: '/login'})
+                    mui.toast('注册成功！');
+                  }else{
+                    mui.alert('用户已存在，请尝试其他昵称！');
+                  }
                  })
-                mui.toast('注册成功！');
             } else {
               
                 mui.alert('注册失败，请按提示输入正确信息！');
@@ -167,7 +167,7 @@ li {
     list-style: none;
     text-align: center;
     position: absolute;
-    left: 20%;
+    left: 5%;
     top: 78%;
     font-size: 13px;
     color:black;

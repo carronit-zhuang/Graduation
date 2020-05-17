@@ -11,7 +11,6 @@
     </div>
   </div>
 </div>
-
     <!-- 图片列表区域 -->
     <ul class='photo-list'>
   <router-link v-for="item in list" :key='item.img_url' :to="'/home/photoinfo/'+item.id" tag="li">
@@ -47,21 +46,15 @@ export default {
   methods: {
     getAllCategory () {
       // 获取所有图片的分类
-       this.$http.get('api/getimgcategory').then(result => {
-        
-          // 手动拼接处来一个最完整的分类
-          // result.body.message.unshift({ title: '全部', id: 0 })
-          // this.cates = result.body.message
-          this.cates = JSON.parse(result.bodyText)[0].message
-          // this.cates.splice(1, 3)
+       this.$axios.get('api/getimgcategory').then(result => {
+          this.cates = result.data[0].message
         
       })
     },
     getPhotoListByCateId (cateId) {
       // 根据分类id获取图片列表
-      this.$http.get('api/getimages/' + cateId).then(result => {
-          // this.list = result.body.message
-          this.list = JSON.parse(result.bodyText)
+      this.$axios.get('api/getimages/' + cateId).then(result => {
+          this.list = result.data
         
       })
     }

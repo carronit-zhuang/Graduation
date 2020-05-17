@@ -12,7 +12,7 @@
     <router-link :to="'/orderlist/detail/'+item.orderNum" tag="div" class="order-item" v-for="item in orderList" :key="item.index">
       <div class="row">
         <p class="order-num">订单号：{{item.orderNum}}</p>
-        <span :class="[ item.paid ? 'greenTag':'redTag']">{{item.paid ? '已支付' :'待付款'}}</span>
+        <span :class="[ item.ordered ? 'greenTag':'redTag']">{{item.ordered ? '已下单' :'待下单'}}</span>
       </div>
     </router-link>
      <div class="space"></div>
@@ -28,7 +28,7 @@ export default {
   data(){
     return{
       orderList: [],
-      cates: ['全部','待付款','已支付'],
+      cates: ['全部','待下单','已下单'],
     }
   },
   created(){
@@ -47,26 +47,26 @@ export default {
   methods: {
     getAllOrderList(){
       const {username} = JSON.parse(localStorage.getItem('Login_data'))
-      this.$http.get('api/orderlist?username='+username).then(result=>{
-        this.orderList = JSON.parse(result.bodyText)
+      this.$axios.get('api/orderlist?username='+username).then(result=>{
+        this.orderList = result.data
       })
     },
-    getPaidOrderList(){
+    getOrderedList(){
         const {username} = JSON.parse(localStorage.getItem('Login_data'))
-        this.$http.get('api/orderlist?username='+username+'&paid=true' ).then(result=>{
-         this.orderList = JSON.parse(result.bodyText)
+        this.$axios.get('api/orderlist?username='+username+'&ordered=true' ).then(result=>{
+         this.orderList = result.data
       })
     },
-    getUnPaidOrderList(){
+    getUnOrderedList(){
       const {username} = JSON.parse(localStorage.getItem('Login_data'))
-        this.$http.get('api/orderlist?username='+username+'&paid=false').then(result=>{
-         this.orderList = JSON.parse(result.bodyText)
+        this.$axios.get('api/orderlist?username='+username+'&ordered=false').then(result=>{
+         this.orderList = result.data
       })
     },
     getAllCategory () {
       // 获取所有图片的分类
-       this.$http.get('api/getordercategory').then(result => {
-          this.cates = JSON.parse(result.bodyText)[0].message
+       this.$axios.get('api/getordercategory').then(result => {
+          this.cates = result.data[0].message
       })
     },
     getOrderByPayment (cateId) {
@@ -74,9 +74,9 @@ export default {
       if(cateId == 0){
         this.getAllOrderList()
       }else if(cateId == 1){
-        this.getUnPaidOrderList()
+        this.getUnOrderedList()
       }else if(cateId == 2){
-        this.getPaidOrderList()
+        this.getOrderedList()
       }
     }
   }

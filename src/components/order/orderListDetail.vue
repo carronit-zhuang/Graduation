@@ -26,7 +26,7 @@
 			</div>
 			
    </div>
-    <mt-button size='large' type='danger' @click="goPay" v-if="showFlag">现在付款</mt-button>
+    <mt-button size='large' type='danger' @click="goOrder" v-if="showFlag">现在下单</mt-button>
 
   </div>
 </template>
@@ -43,15 +43,16 @@ export default {
   },
   created () {
     this.getOrderDetail()
+
   },
   mounted(){
     this.getOrderDetail()
   },
   methods: {
     getOrderDetail () {
-      this.$http.get('api/orderlist/detail/' + this.orderNum).then(result => {
-        this.receiver = JSON.parse(result.bodyText)[0]
-        this.goodslist = JSON.parse(JSON.parse(result.bodyText)[0].order)
+      this.$axios.get('api/orderlist/detail/' + this.orderNum).then(result => {
+        this.receiver = result.data[0]
+        this.goodslist = JSON.parse(result.data[0].order)
         return this.getNewAddedList()
       })
     },
@@ -60,8 +61,8 @@ export default {
         return
       }
       this.goodslist.forEach(item => {
-        this.$http.get('api/goods/getshopcarlist/' + item.id).then(result => {
-          this.newAddedList = this.newAddedList.concat(JSON.parse(result.bodyText))
+        this.$axios.get('api/goods/getshopcarlist/' + item.id).then(result => {
+          this.newAddedList = this.newAddedList.concat(result.data)
           return this.assignProp()
         })
       })
@@ -71,25 +72,38 @@ export default {
       for(var i = 0;i<this.newAddedList.length;i++ ){
         this.goodslist.map(item=>{
         if(item.id == self.newAddedList[i]['id']){
-           item.thumb_path = self.newAddedList[i].thumb_path 
-           return item.title = self.newAddedList[i].title 
+           item.thumb_path = self.newAddedList[i].thumb_path
+           return item.title = self.newAddedList[i].title
           }
         })
       }
       this.newAddedList = this.goodslist
     },
-    goPay(){
-      this.$http.put('api/orderlist/detail/'+this.orderNum,{'paid': true}).then(result=>{
+    goOrder(){
+      this.$axios.put('api/orderlist/detail/'+this.orderNum,{'ordered': true}).then(result=>{
         if(result){
-          mui.toast('支付成功！')
+          this.modifyQuantity()
+          mui.toast('下单成功！')
           this.$router.push('/orderlist')
         }
+      })
+    },
+    modifyQuantity(){
+      const self = this
+      this.$axios.get('api/orderlist/detail/'+this.orderNum).then(result=>{
+        let arr = JSON.parse(result.data[0].order)
+        arr.map(i=>{
+          const {id, count} = i
+          self.$axios.put('api/modifyQuantity/'+ id,{'quantity':count}).then(result=>{
+              //减少商品的数量
+          })
+        })
       })
     }
   },
   computed: {
     showFlag(){
-      return !Boolean(this.receiver.paid)
+      return !Boolean(this.receiver.ordered)
     }
   },
 }

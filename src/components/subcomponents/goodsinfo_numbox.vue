@@ -24,7 +24,7 @@ export default {
   methods: {
     countChanged () {
       // 每当子组件中文本框的数据被修改的时候，就要立即把最新的数据通过事件调用，传递给父组件
-      // console.log(this.$refs.numbox.value)
+      //控制加入购物车的数量不得超过商品的最大数量max
       if(this.$refs.numbox.value > parseInt(this.max)){
        this.$emit('getcount', parseInt(this.max))
       }else{

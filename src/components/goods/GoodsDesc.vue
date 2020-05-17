@@ -21,9 +21,8 @@ export default {
   },
   methods: {
     getGoodsDesc () {
-      this.$http.get('api/goods/getdesc/' + this.$route.params.id).then(result => {
-        this.info = JSON.parse(result.bodyText)[0]
-        // this.info = result.body.message[0]
+      this.$axios.get('api/goods/getdesc/' + this.$route.params.id).then(result => {
+        this.info = result.data[0]
       })
     }
   }

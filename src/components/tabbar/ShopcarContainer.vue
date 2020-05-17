@@ -12,8 +12,6 @@
               <p>
                 <span class="price">￥{{item.sell_price}}</span>
                 <numbox :countInit="$store.getters.getGoodsCount[item.id]" :goodsid='item.id'></numbox>
-                <!-- 问题：如何从购物车中获取商品的数量呢？ -->
-                <!-- 我们可以先创建一个空对象，然后循环购物车中所有商品的数据，把当前循环这条商品的ID，作为对象的属性名，count作为对象的属性值，这样，当把所有的商品循环一遍，就会得到一个对象：{88:2, 89:1,90:4} -->
                 <a class="a_style" href="#" @click.prevent="remove(item.id,index)">删除</a>
               </p>
             </div>
@@ -28,12 +26,11 @@
               <p>总计（不含运费）  </p>
               <p>已勾选商品<span class="red"> {{$store.getters.getAllCountAndTotalPrice.count}} </span>件，总价<span class="red"> ￥{{$store.getters.getAllCountAndTotalPrice.totalPrice}}</span></p>
             </div>
-            <mt-button type='danger' @click="goOrder">去结算</mt-button>
+            <mt-button type='danger' @click="goOrder">去下单</mt-button>
 					</div>
 				</div>
 			</div>
    </div>
-   <!-- <p>{{$store.getters.getGoodsSelected}}</p> -->
 
   </div>
 </template>
@@ -54,27 +51,14 @@ export default {
   },
   methods: {
     getGoodsList () {
-      // 获取到store中所有商品的id,然后拼接成一个用逗号分割开的字符串
       if(this.$store.state.cart.length == 0){
         return
       }
-      // var idArr = []
       this.$store.state.cart.forEach(item => {
-        // console.log(this.$store.state.cart,item)
-        this.$http.get('api/goods/getshopcarlist/' + item.id).then(result => {
-          this.goodslist = this.goodslist.concat(JSON.parse(result.bodyText))
+        this.$axios.get('api/goods/getshopcarlist/' + item.id).then(result => {
+          this.goodslist = this.goodslist.concat(result.data)
         })
-        // idArr.push(item.id)
       })
-      // 如果购物车中没有商品，则直接返回，不需要请求数据接口，否则会报错
-      // if (idArr.length <= 0) {
-      //   return
-      // }
-      // 获取购物车商品列表
-      // this.$http.get('api/goods/getshopcarlist/' + idArr.join(',')).then(result => {
-      //   this.goodslist = result.body.message
-      //   console.log(result)
-      // })
     },
     remove (id, index) {
       // 点击删除，根据id删除vuex中的商品数据，根据index删除goodslist中的商品数据

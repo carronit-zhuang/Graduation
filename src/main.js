@@ -1,9 +1,10 @@
 // 入口文件
 import Vue from 'vue'
-// 1.1 导入路由的包
+//导入路由的包
 import VueRouter from 'vue-router'
-
-
+import axios  from 'axios'
+Vue.prototype.$axios = axios
+axios.defaults.baseURL = 'http://127.0.0.1:3000'
 import Vuerify from 'vuerify'
 
 Vue.use(Vuerify, {
@@ -12,8 +13,6 @@ Vue.use(Vuerify, {
     message: '请您输入正确的手机号码！'
   }})/*, 添加自定义规则，默认提供了 email, required, url 等规则 */
 
-// import  VConsole  from  'vconsole'
-// new VConsole()
 // 注册vuex状态管理器
 import Vuex from 'vuex'
 // 1.3 引入自己的router.js路由模块
@@ -23,12 +22,10 @@ import VuePreview from 'vue-preview'
 // 导入格式化时间的moment插件
 import moment from 'moment'
 import 'lib-flexible'
-// 2.1 导入vue-resource
-import VueResource from 'vue-resource'
 // 引入app组件
 import App from './App.vue'
 
-// 按需要导入mint-ui中的组件   但是要注意的是，在按需导入懒加载的时候，会导致懒加载图标丢失，此时只能全部导入
+//在按需导入懒加载的时候，会导致懒加载图标丢失，此时只能全部导入
 // import {Header,Swipe, SwipeItem,Button,Lazyload} from 'mint-ui';
 import MintUi from 'mint-ui'
 
@@ -59,7 +56,7 @@ Vue.prototype.mui = mui
 let {cart} = JSON.parse(localStorage.getItem('Login_data') || '[]')
 if(cart){
   if(!Array.isArray(cart)){
-    cart = JSON.parse(cart)
+    cart = Array.isArray( JSON.parse(cart) )?JSON.parse(cart) :JSON.parse(JSON.parse(cart) )
   }
 }else{
   cart = []
@@ -67,9 +64,11 @@ if(cart){
 // var cart = JSON.parse(localStorage.getItem('Login_data')).cart
 var store = new Vuex.Store({
   state: {// this.$store.state.***
-    'cart': cart, // 将购物车中的商品的数据，用一个数组存储起来，在cart数组中，存储一些商品的对象，咱们可以将这个商品的对象设计成如下这个样子：
+    'cart': cart, 
+    // 将购物车中的商品的数据，用一个数组存储起来
     // {id:商品的id , count:要购买的数量,price: 商品的单价, selected: false}
-    'order': []
+    'order': [],
+    'resetUserName':''
   },
   mutations: {// this.$store.commit('方法的名称'，'按需传递唯一的参数')
     addToCart (state, goodsinfo) {
@@ -77,7 +76,6 @@ var store = new Vuex.Store({
       // 分析：
       // 1.如果购物车中，之前早就有这个对应的商品了，那么只需要更新数量
       // 2.如果没有，则直接把商品的数据push到cart中即可
-
       // 假设在购物车中，没有找到对应的商品
       var flag = false
       state.cart.some(item => {
@@ -109,7 +107,6 @@ var store = new Vuex.Store({
       let tempObj = JSON.parse(localStorage.getItem('Login_data'))
       tempObj.cart = state.cart
       localStorage.setItem('Login_data', JSON.stringify(tempObj))
-      // localStorage.setItem('cart', JSON.stringify(state.cart))
     },
     removeData (state, id) {
       // 根据传过来的id删除store中那条数据
@@ -121,7 +118,6 @@ var store = new Vuex.Store({
       })
       // 将删除完毕后的最新数据重新写到本地存储中
       // console.log(JSON.stringify(state.cart))
-      // localStorage.setItem('cart', JSON.stringify(state.cart))
       let tempObj = JSON.parse(localStorage.getItem('Login_data'))
       tempObj.cart = state.cart
       localStorage.setItem('Login_data', JSON.stringify(tempObj))
@@ -134,7 +130,6 @@ var store = new Vuex.Store({
         }
       })
       // 更改了selected属性之后，再把更新后的开关状态保存到本地存储中去
-      // localStorage.setItem('cart', JSON.stringify(state.cart))
       let tempObj = JSON.parse(localStorage.getItem('Login_data'))
       tempObj.cart = state.cart
       localStorage.setItem('Login_data', JSON.stringify(tempObj))
@@ -151,6 +146,9 @@ var store = new Vuex.Store({
       }
       state.order = []
       return state.order.push(obj)
+    },
+    assignResetUserName(state, name){
+      return state.resetUserName = name
     }
 
   },
@@ -191,6 +189,9 @@ var store = new Vuex.Store({
         }
       })
       return o
+    },
+    getOrderByNowPrice (state) {
+      return state.order[0].count * state.order[0].price
     }
   }
 
@@ -202,22 +203,16 @@ Vue.use(VuePreview)
 Vue.filter('dateFormat', function (dataStr, pattern = 'YYYY-MM-DD HH:MM:SS') {
   return moment(dataStr, moment.ISO_8601).format(pattern)
 })
-// 2.2 安装vue-resource
-Vue.use(VueResource)
-
-
 //全局配置请求的根路径
 // Vue.http.options.root = 'http://www.liulongbin.top:3005'
 // Vue.http.options.root = 'http://192.168.1.105:3005'
-Vue.http.options.root = '/zjj'
-
-// const ip = getIpAddress()
+// Vue.http.options.root = '/zjj'
 
 // Vue.http.options.root = `http://${ip}:3000`
 
 
 // 全局设置post时候的表单数据格式
-Vue.http.options.emulateJSON = true
+// Vue.http.options.emulateJSON = true
 Vue.use(MintUi)
 
 new Vue({

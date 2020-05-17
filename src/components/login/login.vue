@@ -34,7 +34,7 @@ export default {
     name: 'hello',
     data() {
         return {
-            msg: '欢迎访问庄佳杰的手机网站，请登录！',
+            msg: '欢迎访问，请登录！',
             username: '',
             password: '',
             flag: false,
@@ -69,21 +69,20 @@ export default {
        handleSubmit() {
          this.findAccount().then(data=>{
            if (data.userExist) { // 手动触发校验所有数据  用户是否存在
-              // do something
               if(data.correctQuery){  //账户和密码是否对应
-                this.$http.get('api/account/straight?username='+this.username).then(result=>{
-                  const phone = result.body[0].phone
-                  const email = result.body[0].email
-                  const cart = result.body[0].cart
+                console.log(111)
+                this.$axios.get('api/account/straight?username='+this.username).then(result=>{
+                  const phone = result.data[0].phone
+                  const email = result.data[0].email
+                  const cart = result.data[0].cart
                   localStorage.setItem("Login_data", JSON.stringify({
                     username: this.username,
                     password: this.password,
                     email: email,
                     phone: phone,
-                    cart: cart
+                    cart: JSON.parse(cart)
                 }))
-                console.log(JSON.parse(cart))
-                this.$store.commit('updateCart',JSON.parse(cart))
+                this.$store.commit('updateCart', Array.isArray( JSON.parse(cart) )?JSON.parse(cart) :JSON.parse(JSON.parse(cart) ))
                 mui.toast(this.username +'，欢迎您！');
                 this.$router.push({ path: '/home'})
                 })
@@ -99,8 +98,8 @@ export default {
         },
        findAccount() {
          return new Promise((resolve,reject)=>{
-            this.$http.get('api/account?username='+this.username+'&password='+this.password).then(result=>{
-              resolve(result.body)
+            this.$axios.get('api/account?username='+this.username+'&password='+this.password).then(result=>{
+              resolve(result.data)
            })
          })
         },

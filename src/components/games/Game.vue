@@ -3,8 +3,7 @@
   <div class="layout">
     <header>
       <span class="score">总分：{{score}}</span>
-      <button class="star" @click="init">开始/重设 游戏</button>
-      <!-- <span class="sd"></span> -->
+      <button class="star" @click="init">重设 游戏</button>
     </header>
     <div class="all-container">
       <div class="background">

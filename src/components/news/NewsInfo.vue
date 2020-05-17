@@ -5,7 +5,6 @@
     <!-- 子标题 -->
     <p class='subtitle'>
       <span>发表时间：{{newsinfo.add_time | dateFormat}}</span>
-      <!-- <span>点击：{{newsinfo.click}}次</span> -->
     </p>
     <hr>
     <!-- 内容的区域 -->
@@ -36,9 +35,8 @@ export default {
   },
   methods: {
     getNewsInfo () { // 获取新闻资讯的详情
-      this.$http.get('api/getnew/' + this.id).then(result => {
-          console.log(result)
-          this.newsinfo = JSON.parse(result.bodyText)[0].message[0]
+      this.$axios.get('api/getnew/' + this.id).then(result => {
+          this.newsinfo = result.data[0].message[0]
       })
     }
   },
