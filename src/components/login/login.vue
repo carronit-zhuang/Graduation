@@ -17,9 +17,9 @@
           </div>
           
             <div class="link-area">
-              <router-link to="/register"><span id='reg'>注册账号</span> </router-link>
+              <router-link to="/register"><span id='reg' style="color:blue;">注册账号</span> </router-link>
               <span class="spliter">|</span>
-               <router-link to="/forget"><span id='forgetPassword'>忘记密码</span></router-link>
+               <router-link to="/forget"><span id='forgetPassword' style="color:red;">忘记密码</span></router-link>
           </div>
             <mt-button type="primary" size='large' @click="handleSubmit">登录</mt-button>
         </form>
@@ -34,7 +34,7 @@ export default {
     name: 'hello',
     data() {
         return {
-            msg: '欢迎访问，请登录！',
+            msg: '欢迎访问，请登录',
             username: '',
             password: '',
             flag: false,
@@ -180,12 +180,13 @@ input {
   border-radius: 3px !important;
 }
 .hello {
-  margin-top: 6%;
-  margin-top: 150px;
-    border: 1px solid rgb(130, 71, 138);
+    margin-top: 6%;
+    margin-top: 150px;
+    /* border: 1px solid rgb(130, 71, 138); */
     background: aliceblue;
     padding: 10px;
     border-radius: 3px;
+    background-image: url('../../../public/images/login.jpg');
 }
 .link-area{
   text-align: center;
@@ -199,5 +200,8 @@ input {
 }
 .active {
   color:#007aff;
+}
+html{
+  height: 600px !important;
 }
 </style>

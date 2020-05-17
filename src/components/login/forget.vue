@@ -185,10 +185,12 @@ input {
 .hello {
   margin-top: 6%;
   margin-top: 102px;
-  border: 1px solid rgb(128, 36, 86);
+  /* border: 1px solid rgb(128, 36, 86); */
   padding: 10px;
   background: beige;
   border-radius: 3px;
+  background-image: url('../../../public/images/forget.jpg');
+
 }
 #problemResult {
   background: darksalmon;
