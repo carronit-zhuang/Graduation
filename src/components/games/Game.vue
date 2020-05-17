@@ -112,7 +112,7 @@
           container.removeEventListener('touchmove',moveFunc)
         })
       })
-
+       window.scrollTo(0, 0)
     },
      components: {
        // 2.用来注册子组件的节点

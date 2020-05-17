@@ -77,6 +77,7 @@ export default {
   created () {
     this.getSwiper()
     this.getGoodsInfo()
+    window.scrollTo(0, 0)
   },
   methods: {
     getSwiper () {

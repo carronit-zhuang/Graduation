@@ -51,6 +51,7 @@ export default {
     // this.getGoodsList()
     this.getAllCategory()
     this.getGoodsListByCateId(0) // 默认一进来就展示全部的图片资料
+    window.scrollTo(0, 0)
   },
   methods: {
     getMore () {

@@ -33,6 +33,7 @@ export default {
   },
   created () {
     this.getPerson('username')
+    window.scrollTo(0, 0)
   },
   mounted(){
     // this.getGoodsList()

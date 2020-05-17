@@ -37,6 +37,7 @@ export default {
   created () {
     this.getThumbs()
     this.getPhotoInfo()
+    window.scrollTo(0, 0)
   },
   methods: {
     getPhotoInfo () {

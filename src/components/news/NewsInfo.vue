@@ -32,6 +32,7 @@ export default {
   },
   created () {
     this.getNewsInfo()
+    window.scrollTo(0, 0)
   },
   methods: {
     getNewsInfo () { // 获取新闻资讯的详情

@@ -78,7 +78,7 @@ export default {
      this.getPerson('username')
      this.getPerson('email')
      this.getPerson('phone')
-
+     window.scrollTo(0, 0)
   },
   mounted(){
 

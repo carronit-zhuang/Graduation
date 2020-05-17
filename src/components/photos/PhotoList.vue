@@ -35,6 +35,7 @@ export default {
   created () {
     this.getAllCategory()
     this.getPhotoListByCateId(0) // 默认一进来就展示全部的图片资料
+    window.scrollTo(0, 0)
   },
   mounted () { // 当组件中的DOM结构被渲染好后并放到页面中，才执行这个钩子函数
     // 如果要操作元素了，最早也要在mounted里面才开始，这时的DOM才是最新的

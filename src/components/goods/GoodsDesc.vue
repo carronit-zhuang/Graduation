@@ -18,6 +18,7 @@ export default {
   },
   created () {
     this.getGoodsDesc()
+    window.scrollTo(0, 0)
   },
   methods: {
     getGoodsDesc () {

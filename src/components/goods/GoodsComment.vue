@@ -7,6 +7,12 @@
 <script>
 import cmtbox from '../subcomponents/comment.vue'
 export default {
+  date(){
+
+  },
+  created(){
+    window.scrollTo(0, 0)
+  },
   components: {
     cmtbox
   }
