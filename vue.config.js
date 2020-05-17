@@ -1,19 +1,18 @@
 const ip = require('./getIpAddress.js')
-// const ip = getIpAddress()
-// console.log(process.env.NODE_ENV)
 module.exports = {
   publicPath:'./',
   devServer: {
+    disableHostCheck: true,
     open: true,
     // proxy: 'http://192.168.1.100:3000'
-    proxy:{ '/zjj': 
-    {
-    //  target: 'http://192.168.1.105:3000',
-     target: `http://${ip}:3000`,
-     changeOrigin: true,
-     ws: true,
-     secure: false,
-     pathRewrite:{"^/zjj": ""}} }
+      //  target: 'http://192.168.1.105:3000',
+    // proxy:{ '/zjj': 
+    // {
+    //  target: `http://${ip}:3000`,
+    //  changeOrigin: true,
+    //  ws: true,
+    //  secure: false,
+    //  pathRewrite:{"^/zjj": ""}} }
     // proxy: `http://${ip}:3000`
   },
   css: {
