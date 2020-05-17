@@ -75,71 +75,100 @@ exports.getComments= (req,res) => {
 //新增评论
 exports.addComments= (req,res) => {
   let id = req.params.id
+  let temp = handleTemp(id,12,26,60)
   let content = req.body.content
   let user_name = req.body.user_name
-  let i 
-    //先拿到已存在的数据数量
-  if(id<=12){   //新闻资讯页面发表评论数据(新增)
-    let temp = "news"+id
-    async function getCount(){
-      await Comments.countDocuments({'id':temp},(err,docs)=>{
-        if(err){
-          console.log(err)
-          return
-        }
-         i = docs
-      })
+  let i
+  getCount(temp)
+  async function getCount(temp){  //先拿到已存在的数据数量
+    await Comments.countDocuments({'id':temp},(err,docs)=>{
+      if(err){
+        console.log(err)
+        return
+      }
+       i = docs
+    })
     //新增数据
     const comment = new Comments({
-      "id":"news"+id,
+      "id": temp,
       "sort":i,
       "message":{"user_name":user_name,"content":content,"add_time":new Date().toISOString() }
     })
     comment.save()
     res.json(i)
-    }
-    getCount()
-  }else if(id<=26){  //图片详情页面发表评论数据(新增)
-    let temp = "photo"+id
-    async function getCount(){
-      await Comments.countDocuments({'id':temp},(err,docs)=>{
-        if(err){
-          console.log(err)
-          return
-        }
-         i = docs
-      })
-    //新增数据
-    const comment = new Comments({
-      "id":"photo"+id,
-      "sort":i,
-      "message":{"user_name":user_name,"content":content,"add_time":new Date().toISOString() }
-    })
-    comment.save()
-    res.json(i)
-    }
-    getCount()
-  }else if(id<=60){  //商品详情页面发表评论数据(新增)
-    let temp = "goods"+id
-    async function getCount(){
-      await Comments.countDocuments({'id':temp},(err,docs)=>{
-        if(err){
-          console.log(err)
-          return
-        }
-         i = docs
-      })
-    //新增数据
-    const comment = new Comments({
-      "id":"goods"+id,
-      "sort":i,
-      "message":{"user_name":user_name,"content":content,"add_time":new Date().toISOString() }
-    })
-    comment.save()
-    res.json(i)
-    }
-    getCount()
   }
+
+  function handleTemp(id,newsCount,photosCount,goodsCount){
+    if(id<=newsCount){
+      return "news"+id
+    }else if(id<=photosCount){
+      return "photo"+id
+    }else if(id<=goodsCount){
+      return "goods"+id
+    }
+  }
+  //   //先拿到已存在的数据数量
+  // if(id<=12){   //新闻资讯页面发表评论数据(新增)
+  //   let temp = "news"+id
+  //   async function getCount(){
+  //     await Comments.countDocuments({'id':temp},(err,docs)=>{
+  //       if(err){
+  //         console.log(err)
+  //         return
+  //       }
+  //        i = docs
+  //     })
+  //   //新增数据
+  //   const comment = new Comments({
+  //     "id":"news"+id,
+  //     "sort":i,
+  //     "message":{"user_name":user_name,"content":content,"add_time":new Date().toISOString() }
+  //   })
+  //   comment.save()
+  //   res.json(i)
+  //   }
+  //   getCount()
+  // }else if(id<=26){  //图片详情页面发表评论数据(新增)
+  //   let temp = "photo"+id
+  //   async function getCount(){
+  //     await Comments.countDocuments({'id':temp},(err,docs)=>{
+  //       if(err){
+  //         console.log(err)
+  //         return
+  //       }
+  //        i = docs
+  //     })
+  //   //新增数据
+  //   const comment = new Comments({
+  //     "id":"photo"+id,
+  //     "sort":i,
+  //     "message":{"user_name":user_name,"content":content,"add_time":new Date().toISOString() }
+  //   })
+  //   comment.save()
+  //   res.json(i)
+  //   }
+  //   getCount()
+  // }else if(id<=60){  //商品详情页面发表评论数据(新增)
+  //   let temp = "goods"+id
+  //   async function getCount(){
+  //     await Comments.countDocuments({'id':temp},(err,docs)=>{
+  //       if(err){
+  //         console.log(err)
+  //         return
+  //       }
+  //        i = docs
+  //     })
+  //   //新增数据
+  //   const comment = new Comments({
+  //     "id":"goods"+id,
+  //     "sort":i,
+  //     "message":{"user_name":user_name,"content":content,"add_time":new Date().toISOString() }
+  //   })
+  //   comment.save()
+  //   res.json(i)
+  //   }
+  //   getCount()
+  // }
 }
 
  //获取图片的分类信息
