@@ -3,7 +3,7 @@
         <mt-swipe :auto="4000">
       <!-- 在组件中使用v-for循环渲染的时候，必须用:key 绑定字符串或者数字 -->
       <!-- 将来，谁使用此轮播图组件，谁为我们传递 lunbotuList,此时的lunbotuList应该是涉及到父组件向子组件传值 -->
-      <mt-swipe-item v-for='item in lunbotuList' :key='item.id'>
+      <mt-swipe-item v-for='item in swiperList' :key='item.id'>
         <img :src="item.src" :class="{full:isfull}">
       </mt-swipe-item>
     </mt-swipe>
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  props: ['lunbotuList', 'isfull']
+  props: ['swiperList', 'isfull']
 }
 </script>
 
