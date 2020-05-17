@@ -7,12 +7,6 @@
    <mt-button type='primary' size='large' @click='postComment'>发表评论</mt-button>
    <div class="cmt-list">
      <div class="cmt-item" v-for="(item, i) in comments" :key='item.index'>
-       <!-- <div class="cmt-title">
-         <span>第{{i+1}}楼&nbsp;&nbsp; 用户： {{item.message.user_name}}&nbsp;&nbsp;</span> <span>发表时间:{{item.message.add_time | dateFormat}}</span>
-       </div>
-       <div class="cmt-body">
-         {{item.message.content === 'undefined' ? '此用户很懒，什么都没留下':item.message.content}}
-       </div> -->
        		<div class="mui-card">
 				<div class="mui-card-header">
            <span>第</span> 
@@ -62,17 +56,13 @@ export default {
     },
     getComments () { // 获取评论的数据
       this.$axios.get('api/getcomments/' + this.id + '/' + this.pageIndex).then(result => {
-          // this.comments = result.body.message;
           let message = []
           message = result.data
-          // this.comments = this.comments.concat(result.body.message)
           if(message.length == 0){
-            // return mui.toast('已加载到最后一页！')
             return mui.alert('欢迎使用庄佳杰网站', '评论已加载到最后一页')
           }
           mui.toast('加载中，请稍等。')
           this.comments = this.comments.concat(message)
-          // console.log(this.comments)
       })
     },
     getMore () { // 获取更多
@@ -84,28 +74,23 @@ export default {
       if (this.msg.trim().length === 0) {
         return mui.toast('评论内容不能为空！')
       }
-      mui.toast('发表成功')
       // post的三个参数：
       // 1.请求的url地址
       // 2.提交给服务器的数据对象 {content: this.msg}
       // 3.定义提交的时候，表单中数据的格式 {emulateJSON: true}   这个应该全局配置，比较方便
       this.$axios
         .post('api/postcomment/' + this.$route.params.id, { content: this.msg.trim(),user_name:this.username}).then(result => {
-          // 1.拼接出一个评论对象
-          // var cmt = { user_name: '匿名用户', add_time: Date.now(), content: this.msg.trim() }
-          // // 2.将拼接出的评论放到数组的第一项
-          // this.comments.unshift(cmt)
+          if(!result.data.sort){
+           return mui.toast('系统繁忙，请重试！')
+          }
           this.msg = ''
           this.pageIndex = 1
-          // let message = []
-          // message = (JSON.parse(result.bodyText))
-          // this.comments = message
-          this.$axios.
-            get('api/getcomments/' + this.id + '/' + this.pageIndex).then(result => {
+          this.$axios.get('api/getcomments/' + this.id + '/' + this.pageIndex).then(result => {
           let message = []
           message = result.data
           this.comments = message
           })
+          mui.toast('发表成功')
       })
     }
 
@@ -149,24 +134,5 @@ export default {
       color: grey;
     }
   }
-    
-    // .cmt-list{
-    //   margin: 5px 0;
-    //   .cmt-item{
-    //     font-size: 13px;
-    //     .cmt-title{
-    //       display: flex;
-    //       padding:0 10px;
-    //       justify-content:space-between;
-    //       line-height: 30px;
-    //       background-color: darkseagreen;
-    //     }
-    //     .cmt-body{
-    //       line-height: 35px;
-    //       text-indent: 2em;
-    //     }
-    //   }
-    // }
-
-  }
+}
 </style>
