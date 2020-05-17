@@ -24,8 +24,11 @@
     </div>
       
     <div class="box">
+        <button id='showCityPicker3' class="mui-btn mui-btn-block" type='button'>点击选择收货省市</button>
+       <br>
         <div class="content">
-         <label for="showCityPicker3">收货省市:</label><input id='showCityPicker3' class="mui-btn mui-btn-block" type='button'>
+         <label for="provAndCity">收货省市:</label>
+        <input id='provAndCity' type='text' v-model="jointAddress">
         <div style="width:9px;"></div>
       </div>
     </div>
@@ -46,13 +49,13 @@
     </div>
    
       
-    <div id='father' v-show="showCity">
+    <!-- <div id='father' v-show="showCity">
         <div id='cityResult3' class="ui-alert">
           <div class="province">{{province}}</div>
           <div class="city">{{city}}</div>
           <div class="district">{{district}}</div>
           </div><br>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -73,7 +76,9 @@ export default {
         phone: '',
         postCode: '',
         info: '',
-        address: ''
+        address: '',
+        cart: [],
+        jointAddress: ''
       }
   },
   components: {
@@ -81,6 +86,7 @@ export default {
   created(){
     this.getPerson('username')
     this.getPerson('phone')
+    this.getPerson('cart')
   },
   computed: {
     errors() {
@@ -142,6 +148,7 @@ export default {
               self.province = (_getParam(items[0], 'text')) 
               self.city = (_getParam(items[1], 'text')) 
               self.district = (_getParam(items[2], 'text')) 
+              self.jointAddress = `${self.province }\xa0${self.city}\xa0${self.district}`
             });
 					}, false);
 				});
@@ -177,7 +184,8 @@ export default {
         mui.confirm('是否现在结算该订单？', this.username +' 您好', btnArray, function(e) {
           if (e.index == 1) {
             self.$axios.post('api/orderlist',{username:self.username,phone:self.phone,postCode:self.postCode,specificAddress:specificAddress,orderNum:orderNum,ordered: true,order:order}).then(result=>{
-                  self.$router.push('/orderlist')
+              JSON.parse(order).map(item=>self.$store.commit('removeData', item.id))
+              self.$router.push('/orderlist')
             })
           } else {
             self.$axios.post('api/orderlist',{username:self.username,phone:self.phone,postCode:self.postCode,specificAddress:specificAddress,orderNum:orderNum,ordered: false,order:order}).then(result=>{
@@ -314,7 +322,7 @@ input {
   align-items: center;
   margin-left: 34%;
 }
-#showCityPicker3 {
+#provAndCity {
   width:405px;
 }
 </style>
