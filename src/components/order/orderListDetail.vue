@@ -26,8 +26,10 @@
 			</div>
 			
    </div>
-    <mt-button size='large' type='danger' @click="goOrder" v-if="showFlag">现在下单</mt-button>
-
+    <div class="space"></div>
+    <mt-button size='large' type='primary' @click="goOrder" v-if="showFlag">现在下单</mt-button>
+    <div class="space"></div>
+    <mt-button size='large' type='danger' @click="goCancel" v-if="showFlag">取消订单</mt-button>
   </div>
 </template>
 
@@ -43,6 +45,7 @@ export default {
   },
   created () {
     this.getOrderDetail()
+    window.scrollTo(0, 0)
 
   },
   mounted(){
@@ -80,10 +83,19 @@ export default {
       this.newAddedList = this.goodslist
     },
     goOrder(){
+      const self = this
       this.$axios.put('api/orderlist/detail/'+this.orderNum,{'ordered': true}).then(result=>{
         if(result){
           this.modifyQuantity()
-          mui.toast('下单成功！')
+          this.newAddedList.map(item=>self.$store.commit('removeData', item.id))
+          this.$router.push('/orderlist')
+        }
+      })
+    },
+    goCancel(){
+      this.$axios.delete('api/orderlist/detail/'+this.orderNum).then(result=>{
+        if(result){
+          mui.toast('取消成功！')
           this.$router.push('/orderlist')
         }
       })
@@ -96,6 +108,7 @@ export default {
           const {id, count} = i
           self.$axios.put('api/modifyQuantity/'+ id,{'quantity':count}).then(result=>{
               //减少商品的数量
+               mui.toast(`下单成功,库存已减少`)
           })
         })
       })
@@ -214,5 +227,8 @@ p.info {
   color: rgb(233, 43, 43);
   font-weight: bold;
   font-size: 16px;
+}
+.space{
+  margin-bottom: 20px;
 }
 </style>

@@ -57,6 +57,8 @@ router.get('/api/orderlist' ,service.getOrderList);
 router.get('/api/orderlist/detail/:orderNum' ,service.getOrderListDetail);
 //修改订单是否付款
 router.put('/api/orderlist/detail/:orderNum' ,service.updateOrderListPayment);
+//取消订单
+router.delete('/api/orderlist/detail/:orderNum' ,service.deleteOrder);
 //获取商品列表的分类信息
 router.get('/api/getordercategory' ,service.getOrderCategory);
 //获取相应分类商品的信息
