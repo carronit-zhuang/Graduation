@@ -28,11 +28,15 @@
        <br>
         <div class="content">
          <label for="provAndCity">收货省市:</label>
-        <input id='provAndCity' type='text' v-model="jointAddress">
+        <input id='provAndCity' type='text' v-model="jointAddress" placeholder="请输入省市区">
         <div style="width:9px;"></div>
+        <li>{{jointAddressErr}}</li>
+
       </div>
+
     </div>
-      
+
+
     <div class="box">
       <div class="content detailAddress">
           <label for="address">详细地址:</label><input id="address" v-model="address" type="text" placeholder="请输入详细地址（不含省市）" >
@@ -102,6 +106,9 @@ export default {
     postCodeErr() {
       return this.$vuerify.$errors.postCode
     },
+    jointAddressErr(){
+      return this.$vuerify.$errors.jointAddress
+    },
     addressErr() {
     return this.$vuerify.$errors.address
   },
@@ -116,9 +123,13 @@ export default {
         message: '邮编格式错误，请重新输入。'
       },
       phone: 'phone', // 使用全局自定义规则
+      jointAddress:{
+        test:  /(.*?)[省市区县]/,
+        message: '地址应包含“省/市/区/县”等关键字。'
+      }, 
       address: {
-      test:  /(.*?)[市区弄号楼路道]/,
-      message: '地址应包含“路/楼/号/道”等关键字。'
+        test:  /(.*?)[号楼路道]/,
+        message: '地址应包含“路/楼/号/道”等关键字。'
     },
   },
   mounted(){
