@@ -6,7 +6,7 @@ const OrderListSchema = mongoose.Schema({
   "postCode":String,
   "orderNum":String,
   "specificAddress":String,
-  "paid": Boolean,
+  "ordered": Boolean,
   "order": String
 })
 module.exports = mongoose.model('OrderList', OrderListSchema, 'order-list')
