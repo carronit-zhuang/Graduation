@@ -26,6 +26,7 @@
     <div class="box">
         <div class="content">
          <label for="showCityPicker3">收货省市:</label><input id='showCityPicker3' class="mui-btn mui-btn-block" type='button'>
+        <div style="width:9px;"></div>
       </div>
     </div>
       
@@ -38,7 +39,7 @@
 
     <div>
       <p class="bottomBar">
-        <span class="allCount"> 合计：</span> <span class="red"> ￥{{$store.getters.getAllCountAndTotalPrice.totalPrice}}</span>
+        <span class="allCount"> 合计：</span> <span class="red"> ￥{{$store.state.order.length ==1 ? $store.getters.getOrderByNowPrice :$store.getters.getAllCountAndTotalPrice.totalPrice}}</span>
     
         <button type="button" class="mui-btn mui-btn mui-btn-warning" @tap="order">提交订单</button>
       </p>
@@ -175,11 +176,11 @@ export default {
         const order = JSON.stringify(self.$store.state.order)
         mui.confirm('是否现在结算该订单？', this.username +' 您好', btnArray, function(e) {
           if (e.index == 1) {
-            self.$http.post('api/orderlist',{username:self.username,phone:self.phone,postCode:self.postCode,specificAddress:specificAddress,orderNum:orderNum,paid: true,order:order}).then(result=>{
+            self.$axios.post('api/orderlist',{username:self.username,phone:self.phone,postCode:self.postCode,specificAddress:specificAddress,orderNum:orderNum,ordered: true,order:order}).then(result=>{
                   self.$router.push('/orderlist')
             })
           } else {
-            self.$http.post('api/orderlist',{username:self.username,phone:self.phone,postCode:self.postCode,specificAddress:specificAddress,orderNum:orderNum,paid: false,order:order}).then(result=>{
+            self.$axios.post('api/orderlist',{username:self.username,phone:self.phone,postCode:self.postCode,specificAddress:specificAddress,orderNum:orderNum,ordered: false,order:order}).then(result=>{
                 self.$router.push('/orderlist')
            })
           }
@@ -224,7 +225,7 @@ span {
     position: absolute;
     left: 23%;
     align-content: center;
-    top: 38%;
+    top: 42%;
     .ui-alert {
             width:200px;
             display: flex;
@@ -255,7 +256,7 @@ input {
   border-radius: 3px !important;
 }
 .detailAddress {
-  margin-top: 15px;
+  margin-top: 28px;
 }
 h1 {
     text-align: center;
@@ -312,5 +313,8 @@ input {
   display: flex;
   align-items: center;
   margin-left: 34%;
+}
+#showCityPicker3 {
+  width:405px;
 }
 </style>
