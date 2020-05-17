@@ -80,6 +80,7 @@ exports.addComments= (req,res) => {
   let user_name = req.body.user_name
   let i
   getCount(temp)
+
   async function getCount(temp){  //先拿到已存在的数据数量
     await Comments.countDocuments({'id':temp},(err,docs)=>{
       if(err){
@@ -94,8 +95,12 @@ exports.addComments= (req,res) => {
       "sort":i,
       "message":{"user_name":user_name,"content":content,"add_time":new Date().toISOString() }
     })
-    comment.save()
-    res.json(i)
+    if(comment.sort){
+      comment.save()
+      res.json({"sort": true})
+    }else{
+      res.json({"sort": false})
+    }
   }
 
   function handleTemp(id,newsCount,photosCount,goodsCount){
@@ -107,68 +112,6 @@ exports.addComments= (req,res) => {
       return "goods"+id
     }
   }
-  //   //先拿到已存在的数据数量
-  // if(id<=12){   //新闻资讯页面发表评论数据(新增)
-  //   let temp = "news"+id
-  //   async function getCount(){
-  //     await Comments.countDocuments({'id':temp},(err,docs)=>{
-  //       if(err){
-  //         console.log(err)
-  //         return
-  //       }
-  //        i = docs
-  //     })
-  //   //新增数据
-  //   const comment = new Comments({
-  //     "id":"news"+id,
-  //     "sort":i,
-  //     "message":{"user_name":user_name,"content":content,"add_time":new Date().toISOString() }
-  //   })
-  //   comment.save()
-  //   res.json(i)
-  //   }
-  //   getCount()
-  // }else if(id<=26){  //图片详情页面发表评论数据(新增)
-  //   let temp = "photo"+id
-  //   async function getCount(){
-  //     await Comments.countDocuments({'id':temp},(err,docs)=>{
-  //       if(err){
-  //         console.log(err)
-  //         return
-  //       }
-  //        i = docs
-  //     })
-  //   //新增数据
-  //   const comment = new Comments({
-  //     "id":"photo"+id,
-  //     "sort":i,
-  //     "message":{"user_name":user_name,"content":content,"add_time":new Date().toISOString() }
-  //   })
-  //   comment.save()
-  //   res.json(i)
-  //   }
-  //   getCount()
-  // }else if(id<=60){  //商品详情页面发表评论数据(新增)
-  //   let temp = "goods"+id
-  //   async function getCount(){
-  //     await Comments.countDocuments({'id':temp},(err,docs)=>{
-  //       if(err){
-  //         console.log(err)
-  //         return
-  //       }
-  //        i = docs
-  //     })
-  //   //新增数据
-  //   const comment = new Comments({
-  //     "id":"goods"+id,
-  //     "sort":i,
-  //     "message":{"user_name":user_name,"content":content,"add_time":new Date().toISOString() }
-  //   })
-  //   comment.save()
-  //   res.json(i)
-  //   }
-  //   getCount()
-  // }
 }
 
  //获取图片的分类信息
@@ -539,6 +482,18 @@ exports.updateOrderListPayment = (req,res) => {
       }
     })
   }
+
+  exports.deleteOrder = (req,res) => {
+    const {orderNum} = req.params
+    OrderList.deleteOne({'orderNum':orderNum},(err,docs)=>{
+      if(err){
+        console.log(err)
+        return
+      } else{
+          res.json(docs.ok)
+        }
+      })
+    }
 
    //获取订单的分类信息
 exports.getOrderCategory = (req,res) => { 

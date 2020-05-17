@@ -9,6 +9,7 @@
         </div>
       </div>
     </div>
+    <div class="tip" v-show="ifOrderExist">亲爱的{{username}}，您暂无该类订单信息</div>
     <router-link :to="'/orderlist/detail/'+item.orderNum" tag="div" class="order-item" v-for="item in orderList" :key="item.index">
       <div class="row">
         <p class="order-num">订单号：{{item.orderNum}}</p>
@@ -27,6 +28,7 @@ import recommend from '../subcomponents/recommend_all.vue'
 export default {
   data(){
     return{
+      username: '',
       orderList: [],
       cates: ['全部','待下单','已下单'],
     }
@@ -35,11 +37,16 @@ export default {
     this.getAllOrderList()
     this.getAllCategory()
     this.getOrderByPayment(0) // 默认一进来就展示全部的图片资料
+    this.getPerson('username')
+    window.scrollTo(0, 0)
   },
   mounted(){
 
   },
   computed:{
+    ifOrderExist(){
+      return this.orderList.length > 0 ? false : true
+    }
   },
   components: { // 2.注册子组件
   'recommend-box': recommend
@@ -78,7 +85,14 @@ export default {
       }else if(cateId == 2){
         this.getOrderedList()
       }
-    }
+    },
+    getPerson(data){
+      const person = JSON.parse(localStorage.getItem('Login_data'))
+      return this[data] = this.getPersonProp(person, data)
+    },
+    getPersonProp(obj,prop){
+      return obj[prop]
+    },
   }
 }
 </script>
@@ -124,6 +138,13 @@ export default {
   .mui-slider-indicator.mui-segmented-control {
     display: flex;
     justify-content: space-around;  
+  }
+  .tip {
+    font-size: 20px;
+    font-weight: normal;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
   }
 
 </style>
