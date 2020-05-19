@@ -170,7 +170,7 @@ li {
     left: 5%;
     top: 78%;
     font-size: 13px;
-    color:black;
+    color:lightyellow;
 }
 
 a {

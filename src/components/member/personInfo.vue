@@ -118,7 +118,7 @@ export default {
 h1 {
     text-align: center;
     font-size: 20px;
-    color: #b13610;
+    color: crimson;
     font-weight: 900;
     margin-bottom: 20px;
 }
@@ -154,7 +154,7 @@ a {
 }
 label {
     font-weight: 700;
-    color: #b11038;
+    color: crimson;
     width: 27%;
     text-align: center;
     padding-top: 8px;
@@ -167,9 +167,10 @@ input {
 .hello {
   margin-top: 6%;
   margin-top: 102px;
-  border: 1px solid rgb(180, 72, 122);
+  // border: 1px solid rgb(180, 72, 122);
   padding: 10px;
   background: rgb(132, 176, 187);
   border-radius: 3px;
+  background-image: url('../../../public/images/modify.jpg');
 }
 </style>

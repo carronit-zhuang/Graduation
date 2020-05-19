@@ -124,7 +124,7 @@ export default {
 h1 {
     text-align: center;
     font-size: 20px;
-    color: #b13610;
+    color: steelblue;
     font-weight: 900;
     margin-bottom: 20px;
 }
@@ -141,10 +141,10 @@ li {
     list-style: none;
     text-align: center;
     position: absolute;
-    left: 20%;
+    left: 13%;
     top: 78%;
     font-size: 13px;
-    color:black;
+    color:maroon;
 }
 
 .box {
@@ -157,7 +157,7 @@ li {
 }
 label {
     font-weight: 700;
-    color: #b11038;
+    color: gray;
     width: 27%;
     text-align: center;
     padding-top: 8px;
@@ -170,10 +170,12 @@ input {
 .hello {
   margin-top: 6%;
   margin-top: 102px;
-  border: 1px solid rgb(180, 72, 122);
+  /* border: 1px solid rgb(180, 72, 122); */
   padding: 10px;
   background: rgb(132, 176, 187);
   border-radius: 3px;
+  background-image: url('../../../public/images/reset.jpg');
+
 }
 .eye {
   color: black;

@@ -153,10 +153,10 @@ li {
     list-style: none;
     text-align: center;
     position: absolute;
-    left: 14%;
+    left: 7%;
     top: 78%;
     font-size: 13px;
-    color:black;
+    color:dimgrey;
 }
 
 a {
@@ -193,7 +193,7 @@ input {
 
 }
 #problemResult {
-  background: darksalmon;
+  background: lightpink;
   line-height: 26px;
   height: 30px;
   text-align: center;

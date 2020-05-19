@@ -131,7 +131,7 @@ export default {
 h1 {
     text-align: center;
     font-size: 20px;
-    color: #101bb1 ;
+    color: initial ;
     font-weight: 900;
     margin-bottom: 20px;
 }
@@ -169,7 +169,7 @@ a {
 }
 label {
     font-weight: 700;
-    color: #28aecf;
+    color: darkslategray;
     width: 27%;
     text-align: center;
     padding-top: 8px;

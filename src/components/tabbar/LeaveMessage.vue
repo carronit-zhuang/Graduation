@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="feedback" class="mui-page feedback">
+    <div id="feedback" class="mui-page feedback hello">
 	<div class="mui-page-content">
 		<p>问题和意见</p>
 		<div class="row mui-input-row">
@@ -10,6 +10,7 @@
 		<div class="mui-input-row">
 			<input id='contact' v-model="account" type="text" class="mui-input-clear  contact" placeholder="(选填,方便我们联系你 )" />
 		</div>
+    <br>
 		 <button type="button" class="mui-btn mui-btn-success mui-btn-block" @click="postMsg">提交</button>
 	</div>
 </div>
@@ -63,4 +64,16 @@ export default {
   button {
     padding: 5px;
   }
+  .hello {
+  margin-top: 6%;
+  margin-top: 102px;
+  /* border: 1px solid rgb(180, 72, 122); */
+  padding: 10px;
+  background: rgb(132, 176, 187);
+  border-radius: 3px;
+  background-image: url('../../../public/images/message.jpg');
+}
+p {
+  color: honeydew;
+}
 </style>
