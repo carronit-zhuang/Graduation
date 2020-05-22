@@ -76,7 +76,7 @@ export default {
       margin-bottom: 20px;
     }
     h3 {
-      color: rgb(172, 38, 120);
+      color: darkblue;
       font-size: 15px;
       text-align: center;
       margin: 15px 0;

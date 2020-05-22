@@ -69,7 +69,7 @@ export default {
   margin-top: 102px;
   /* border: 1px solid rgb(180, 72, 122); */
   padding: 10px;
-  background: rgb(132, 176, 187);
+  // background: rgb(132, 176, 187);
   border-radius: 3px;
   background-image: url('../../../public/images/message.jpg');
 }

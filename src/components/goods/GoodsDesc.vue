@@ -35,7 +35,7 @@ export default {
   .goodsdesc-container {
     h3 {
       font-size: 16px;
-      color: rgb(168, 42, 84);
+      color: darkblue;
       text-align: center;
       margin: 15px;
     }

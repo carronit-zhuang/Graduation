@@ -1,4 +1,4 @@
-const ip = require('./getIpAddress.js')
+// const ip = require('./getIpAddress.js')
 module.exports = {
   publicPath:'./',
   devServer: {

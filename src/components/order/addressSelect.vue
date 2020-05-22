@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="hello">
     <h1>完善收件人信息</h1>
 
         <div class="box">
@@ -200,7 +200,8 @@ export default {
             })
           } else {
             self.$axios.post('api/orderlist',{username:self.username,phone:self.phone,postCode:self.postCode,specificAddress:specificAddress,orderNum:orderNum,ordered: false,order:order}).then(result=>{
-                self.$router.push('/orderlist')
+              JSON.parse(order).map(item=>self.$store.commit('removeData', item.id))
+              self.$router.push('/orderlist')
            })
           }
         })
@@ -264,7 +265,7 @@ h1 {
 }
 label {
     font-weight: 700;
-    color: #b11038;
+    color: crimson;
     width: 27%;
     text-align: center;
     padding-top: 11px;
@@ -280,7 +281,7 @@ input {
 h1 {
     text-align: center;
     font-size: 20px;
-    color: #b13610;
+    color: currentColor;
     font-weight: 900;
     margin-bottom: 20px;
 }
@@ -334,6 +335,13 @@ input {
   margin-left: 34%;
 }
 #provAndCity {
-  width:405px;
+  width:370px;
+  margin-right: 1%;
+}
+.hello {
+  background-color: lightsteelblue;
+  margin-top: -1%;
+  padding: 3px 0;
+  margin: 10px 9px;
 }
 </style>

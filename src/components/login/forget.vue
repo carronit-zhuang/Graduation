@@ -73,6 +73,8 @@ export default {
               mui.alert('用户不存在！');
             }
                 })
+            } else {
+                mui.alert('验证失败，请按提示输入正确信息！');
             }
         },
         findAccount() {
@@ -187,7 +189,7 @@ input {
   margin-top: 102px;
   /* border: 1px solid rgb(128, 36, 86); */
   padding: 10px;
-  background: beige;
+  /* background: beige; */
   border-radius: 3px;
   background-image: url('../../../public/images/forget.jpg');
 

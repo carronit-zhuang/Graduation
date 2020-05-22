@@ -183,7 +183,7 @@ input {
     margin-top: 6%;
     margin-top: 150px;
     /* border: 1px solid rgb(130, 71, 138); */
-    background: aliceblue;
+    /* background: aliceblue; */
     padding: 10px;
     border-radius: 3px;
     background-image: url('../../../public/images/login.jpg');
